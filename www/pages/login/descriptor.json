@@ -1,0 +1,45 @@
+{
+  "label":"login",
+  "version":"0.0.1",
+  "header":{
+    "display":true,
+    "datas":{},
+    "nav_left":[
+    ],
+    "nav_right":[
+      {"label":"", "link":"/search", "icon":"search"}
+    ],
+    "tab_bar______":[
+      {"label":"link 1", "link":"/link", "icon":""},
+      {"label":"link 2", "link":"/link", "icon":""},
+      {"label":"link 3", "link":"/link", "icon":""},
+      {"label":"link 4", "link":"/link", "icon":""},
+      {"label":"link 5", "link":"/link", "icon":""},
+      {"label":"link 6", "link":"/link", "icon":""},
+      {"label":"link 7", "link":"/link", "icon":""},
+      {"label":"link 8", "link":"/link", "icon":""}
+    ]
+  },
+  "footer":{
+    "display":false,
+    "type":"tabs",
+    "datas":{
+      "control":"login.tabs",
+      "tabs":[
+        {"label":"link 1", "link":"/link", "icon":""},
+        {"label":"link 2", "link":"/link", "icon":""},
+        {"label":"link 3", "link":"/link", "icon":""}
+      ]
+    }
+  },
+  "content":{
+    "display":true,
+    "uri":"login.tmpl",
+    "datas":{}
+  },
+  "class":"login",
+  "dependencies":{
+    "css":["login.css"],
+    "js":[]
+  }
+}

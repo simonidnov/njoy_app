@@ -1,0 +1,149 @@
+<h2><%= label %></h2>
+<p class="app_description"><%= desc %></p>
+<% if(typeof jingle !== "undefined"){ %>
+    <% if(jingle.type === "video"){ %>
+        <div class="jingle">
+            <video controls poster="<%= app.ip+"/"+(jingle.file.replace('mp4', 'png')) %>">
+                <source src="<%= app.ip+"/"+(jingle.file.replace('webm', 'mp4')) %>" type="video/mp4">
+            </video>
+            <div class="cast_button" data-action="cast" data-type="video" data-file="<%= jingle.file %>">Diffuser le Jingle</div>
+        </div>
+    <% } %>
+<% } %>
+<% if(menu.length > 1){ %>
+    <div class="tab_bar">
+        <ul>
+        <% for(var i=0; i<menu.length; i++){ %>
+            <li class="<% if(i===0){ %>selected<% } %>" id="<%= i %>"><%= menu[i].label %></li>
+        <% } %>
+        </ul>
+    </div>
+<% } %>
+<% for(var i=0; i<menu.length; i++){ %>
+<section class="section_tab" id="section_<%= i %>" style="<% if(i>=1){ %>display:none;<% } %>">
+    <h3><%= menu[i].label %></h3>
+    <p><%= menu[i].desc %></p>
+    <% for(var c=0; c<_.keys(menu[i].components).length; c++){ %>
+        <% var comp_datas = menu[i].components[_.keys(menu[i].components)[c]] %>
+        <% if(_.keys(menu[i].components)[c] === "search"){ %>
+          <div id="buttons">
+          <label> <input id="query" value='cats' type="text"/><button id="search-button" disabled onclick="search()">Search</button></label>
+          </div>
+          <div id="search-container">
+          </div>
+          <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+          <script src="auth.js"></script>
+          <script src="search.js"></script>
+          <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
+          <script>
+          // After the API loads, call a function to enable the search box.
+          function handleAPILoaded() {
+          $('#search-button').attr('disabled', false);
+          }
+
+          // Search for a specified string.
+          function search() {
+          var q = $('#query').val();
+          var request = gapi.client.youtube.search.list({
+            q: q,
+            part: 'snippet'
+          });
+
+          request.execute(function(response) {
+            var str = JSON.stringify(response.result);
+            $('#search-container').html('<pre>' + str + '</pre>');
+          });
+          }
+          </script>
+        <% }else if(_.keys(menu[i].components)[c] === "galery"){ %>
+            <ul class="galery_list">
+                <% for(var g=0; g<comp_datas.length; g++){ %>
+                    <li class="picture_gallery">
+                        <div class="pix" style="background-image:url(<%= app.ip+'/'+comp_datas[g].file %>);"></div>
+                        <h3><%= comp_datas[g].label %></h3>
+                        <% if(_.keys(comp_datas[g].datas).length > 0){ %>
+                            <ul class="datas_list">
+                                <% for(var d=0; d<_.keys(comp_datas[g].datas).length; d++){ %>
+                                    <li>
+                                        <div class="label"><%= _.keys(comp_datas[g].datas)[d] %> : </div>
+                                        <%= comp_datas[g].datas[_.keys(comp_datas[g].datas)[d]] %>
+                                    </li>
+                                <% } %>
+                            </ul>
+                        <% } %>
+                        <ul class="choices" style="display:none;">
+                            <li>
+                                GAGNÉ
+                                <div id="0" class="radio_ui" data-checked="false" data-action="response" data-type="success"></div>
+                            </li>
+                            <li>
+                                PERDU
+                                <div id="1" class="radio_ui" data-checked="false" data-action="response" data-type="fail"></div>
+                            </li>
+                        </ul>
+                        <div class="cast_button" data-action="cast" data-type="picture" data-file="<%= comp_datas[g].file %>" data-chronos="<%= comp_datas[g].chronos %>">Diffuser</div>
+                    </li>
+                <% } %>
+            </ul>
+        <% }else if( _.keys(menu[i].components)[c] === "playlist_video" ){ %>
+            <ul class="playlist_video">
+                <% for(var g=0; g<comp_datas.length; g++){ %>
+                    <li>
+                        <video controls>
+                            <source src="<%= app.ip+'/'+(comp_datas[g].file.replace('webm', 'mp4')) %>" type="video/mp4">
+                        </video>
+                        <span><%= comp_datas[g].label %></span>
+                        <div class="cast_button" data-action="cast" data-type="video" data-file="<%= comp_datas[g].file %>">Diffuser</div>
+                    </li>
+                <% } %>
+            </ul>
+        <% }else if( _.keys(menu[i].components)[c] === "playlist_audio" ){ %>
+            <ul class="playlist_video">
+                <% for(var g=0; g<comp_datas.length; g++){ %>
+                    <li>
+                        <audio src="<%= app.ip+'/'+comp_datas[i].file %>" controls></audio>
+                        <span><%= comp_datas[i].label %></span>
+                        <div class="cast_button" data-action="cast" data-type="audio" data-file="<%= comp_datas[i].file %>">Diffuser</div>
+                    </li>
+                <% } %>
+            </ul>
+        <% }else if( _.keys(menu[i].components)[c] === "quiz_component" ){ %>
+            <ul class="quiz_component">
+                <% for(var q=0; q<comp_datas.length; q++){ %>
+                    <li>
+                        <span><%= comp_datas[q].label %></span>
+                        <p class="description"><%= comp_datas[q].desc %></p>
+                        <ul class="choices" style="display:none;">
+                            <% for(var c=0; c<comp_datas[q].choices.length; c++){ %>
+                                <li>
+                                    <%= comp_datas[q].choices[c] %>
+                                    <div class="radio_ui" data-checked="false"></div>
+                                </li>
+                            <% } %>
+                        </ul>
+                        <div class="cast_button" data-action="cast" data-type="object" data-menu="<%= i %>" data-component="quiz_component" data-componentid="<%= q %>">Diffuser</div>
+                    </li>
+                <% } %>
+            </ul>
+        <% }else if( _.keys(menu[i].components)[c] === "golden_family" ){ %>
+            <ul class="quiz_component">
+                <% for(var q=0; q<comp_datas.length; q++){ %>
+                    <li id="question_<%= q %>" data-status="diffused">
+                        <span><%= comp_datas[q].label %></span>
+                        <p class="description"><%= comp_datas[q].desc %></p>
+                        <ul class="choices" style="display:none;">
+                            <% for(var c=0; c<comp_datas[q].choices.length; c++){ %>
+                                <li>
+                                    <%= comp_datas[q].choices[c] %>
+                                    <div id="choice_<%= c %>" class="radio_ui" data-checked="false" data-action="response" data-type="golden_family" data-id="<%= c %>"></div>
+                                </li>
+                            <% } %>
+                        </ul>
+                        <div class="cast_button" data-action="cast" data-type="object" data-menu="<%= i %>" data-component="golden_family" data-componentid="<%= q %>" data-chronos="60" data-chronostype="bottom">Diffuser</div>
+                    </li>
+                <% } %>
+            </ul>
+        <% } %>
+    <% } %>
+</section>
+<% } %>
