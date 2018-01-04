@@ -39,6 +39,58 @@
 .app_tools .column h3{
     background: #E3E3E3;
 }
+
+/* ---------------- VIDEO ASSETS ---------------- */
+.video_asset{
+    position: fixed;
+    bottom:0;
+    height:80px;
+    width:100%;
+    left:0;
+    background-color:#FFF;
+}
+.video_asset:before{
+    content:"";
+    position: absolute;
+    bottom:100%;
+    background-color:rgba(0,0,0,.1);
+    left:0;
+    width:100%;
+    height:3px;
+}
+.video_asset .player_nav{
+    height:70px;
+    text-align: center;
+    display: inline;
+}
+.video_asset .player_nav .icon{
+    display: inline-block;
+    width:70px;
+    height:70px;
+    font-size: 70px;
+}
+.video_asset .seeker{
+    
+}
+.video_asset .seeker .progress,
+.video_asset .seeker:after{
+    content:'';
+    width:80%;
+    height:4px;
+    background-color:#CCC;
+    position: absolute;
+    left:10%;
+    top:3px;
+}
+.video_asset .seeker .progress{
+    background-color:;
+}
+
+/* ---------------- VIDEO ASSETS ---------------- */
+
+
+
+
 .column.components{
     width:100%;
     height:100%;
