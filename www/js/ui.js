@@ -1,4 +1,5 @@
 var ui = {
+    event : "click",
     templates: {
         header: null,
         footer: null
@@ -8,11 +9,16 @@ var ui = {
         params: {}
     },
     init: function() {
+        if('ontouchstart' in window){
+            this.event = 'click';
+        }
         if(typeof StatusBar !== "undefined"){
             StatusBar.hide();
         }
         this.load_templates();
         this.setListeners();
+        
+        
     },
     load_templates: function() {
         _.each(_.keys(this.templates), function(key, index) {
@@ -60,10 +66,11 @@ var ui = {
         ));
         $('#popin_ui_content .popin').css('top', '100%');
         TweenMax.to($('#popin_ui_content .popin'), .5, {top:0, ease:Back.easeOut});
-        $('[data-popbutton]').on('click', function(e){
+        $('[data-popbutton]').on(ui.event, function(e){
            ui.close_popin($(this).attr('data-popbutton'));
         });
-        $('#close_popin').on('click', function(){ui.close_popin();})
+        $('#close_popin').on(ui.event, function(){ui.close_popin();});
+        setTimeout(function(){ui.close_popin();}, 2000);
     },
     close_popin:function(e){
         TweenMax.to($('#popin_ui_content .popin'), .5, {top:"100%", opacity:0, ease:Back.easeIn});
@@ -73,7 +80,7 @@ var ui = {
         ui.popin_callBack(e);
     },
     setListeners: function() {
-        $('[data-navigate]').off('click').on('click', function(event) {
+        $('[data-navigate]').off(ui.event).on(ui.event, function(event) {
             if(typeof $(this).attr('data-direction') !== "undefined"){
                 ui.direction = $(this).attr('data-direction');
             }
@@ -81,8 +88,11 @@ var ui = {
             event.preventDefault();
             return false;
         });
-        $('[data-action]').off('click').on('click', function(){
+        $('[data-action]').off(ui.event).on(ui.event, function(){
             switch($(this).attr('data-action')){
+                case 'drawing':
+                    app.socket.emit("njoy", {status:"drawer"});
+                    break;
                 case 'cast':
                     var status = {};
                     if(typeof $(this).attr('data-type') !== "undefined"){
@@ -106,7 +116,15 @@ var ui = {
                     if(typeof $(this).attr('data-chronostype') !== "undefined"){
                         status['chronos_type'] = $(this).attr('data-chronostype');
                     }
-                    
+                    if($(this).attr('data-type') === "audio"){
+                        if($(this).find('img').attr('src') === "img/pause_icon.svg"){
+                            $(this).find('img').attr('src', "img/play_icon.svg");
+                            status['status'] = "pause_audio";
+                        }else{
+                            $('[data-type="audio"] img').attr('src', "img/play_icon.svg");
+                            $(this).find('img').attr('src', "img/pause_icon.svg");
+                        }
+                    }
                     status['tools'] = app.selected_tool;
                     app.socket.emit("njoy", status);
                     /*switch($(this).attr('data-type')){
@@ -151,7 +169,7 @@ var ui = {
                 default:
                     break;
             }
-            app_tools.components_scroll.refresh();
+            //app_tools.components_scroll.refresh();
             //app.socket.emit("njoy", {"status":"video", "file":"ressources/1703_NJOY_ANIM_LOGO_FB.mp4"});
         });
     },
@@ -226,24 +244,23 @@ var ui = {
                 /* load default page class then init there */
                 $.getScript('pages/' + ui.page_params.page + '/' + ui.descriptor.class + '.js', function(e) {
                     if($('body main.app .screen').length > 2){
-                        $('body main.app .screen').first().remove();
+                        for(var i=0; i<$('body main.app .screen').length-1; i++){
+                            $('body main.app .screen').eq(i).remove();
+                        }
                     }
                     if ($('body main.app .screen').length > 1) {
                         if(ui.direction === "back"){
                             TweenMax.to($('body main.app .screen').first(), .5, {
-                                left: '100%',
-                                ease: Power4.easeInOut
+                                left: '100%'
                             });
                             TweenMax.set($('body main.app .screen').last(), {left:"-100%"});
                         }else{
                             TweenMax.to($('body main.app .screen').first(), .5, {
-                                left: '-100%',
-                                ease: Power4.easeInOut
+                                left: '-100%'
                             });
                         }
                         TweenMax.to($('body main.app .screen').last(), .5, {
                             left: '0%',
-                            ease: Power4.easeInOut,
                             onComplete: function() {
                                 window[ui.descriptor.class].init();
                                 $('body main.app .screen').first().remove();
@@ -280,7 +297,7 @@ var ui = {
     },
     display_error: function(datas) {
         $('.ui_layer').append(ui.templates.notification(datas));
-        $('.cross_close').off('click').on('click', function() {
+        $('.cross_close').off(ui.event).on(ui.event, function() {
             $(this).parent().remove();
         });
         TweenMax.to($('.notification'), .5, {opacity:0, delay:1.5, onComplete:function(){
@@ -324,16 +341,18 @@ var ui = {
                         'left': $('.header-navbar ul li.selected').first().position().left
                     });
                 }
-                $('header .header-navbar li').off('click').on('click', function() {
+                $('header .header-navbar li').off(ui.event).on(ui.event, function() {
                     $('header .header-navbar li').removeClass('selected');
                     $(this).addClass('selected');
                     resizeTabNav();
                 });
+                /*
                 ui.navbar_scroll = new IScroll('#header_navbar_wrapper',{
                     mouseWheel:true, 
                     click: true,
                     useTransition: true
                 });
+                */
             }, this));
         }
     },
@@ -343,11 +362,13 @@ var ui = {
         $('.screen .wrapper .scroller').css({'display':"table", "width":"100%"});
         if($('.screen .wrapper .scroller').length === 1){
             if(typeof IScroll !== "undefined"){
+                /*
                 ui.page_scroll = new IScroll('#screen_wrapper',{
                     mouseWheel:true, 
                     click: true,
                     useTransition: true
                 });
+                */
             }
         }
     },

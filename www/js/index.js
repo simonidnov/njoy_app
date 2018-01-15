@@ -103,10 +103,83 @@ var app = {
                 status: "socket_connected"
             });
         });
+        $('#play_pause_button').off(ui.event).on(ui.event, function(){
+          if($('#play_pause_button img').attr('src') === "img/play_icon.svg"){
+            app.socket.emit("njoy", {status:"pause_video"});
+          }else{
+            app.socket.emit("njoy", {status:"play_video"});
+          }
+          //app.socket.emit("njoy", {status:"pause_video"});
+          console.log('play pause');
+        });
+        $('#mute_button').off(ui.event).on(ui.event, function(){
+          if($('#mute_button img').attr('src') === "img/audio_icon.svg"){
+            app.socket.emit("njoy", {status:"mute_video"});
+          }else{
+            app.socket.emit("njoy", {status:"audio_video"});
+          }
+          console.log('mute');
+        });
+        $('#quit_video_button').off(ui.event).on(ui.event, function(){
+            app.socket.emit("njoy", {status:"stop_video"});
+        });
+        
+        $('#fast_forward').off(ui.event).on(ui.event, function(){
+            app.socket.emit("njoy", {status:"fast_forward_video"});
+        });
+        
+        $('#fast_backward').off(ui.event).on(ui.event, function(){
+            app.socket.emit("njoy", {status:"fast_backward_video"});
+        });
+        
         app.socket.on('njoy', function(datas) {
             switch (datas.status) {
                 case 'activities':
                     app.infos.activities = datas.activities;
+                    break;
+                case 'video_started':
+                    $('#mute_button img').attr('src', "img/audio_icon.svg");
+                    $('#play_pause_button img').attr('src', "img/pause_icon.svg");
+                    $('.video_asset').addClass('started');
+                    $('.screen').css({'height':window.innerHeight-$('header').height()-60, "overflow":"hidden"});
+                    break;
+                case 'video_pause':
+                    if($('#play_pause_button img').attr('src') === "img/play_icon.svg"){
+                        $('#play_pause_button img').attr('src', "img/pause_icon.svg");
+                    }else{
+                        $('#play_pause_button img').attr('src', "img/play_icon.svg");
+                    }
+                    break;
+                case 'video_play':
+                    if($('#play_pause_button img').attr('src') === "img/play_icon.svg"){
+                        $('#play_pause_button img').attr('src', "img/pause_icon.svg");
+                    }else{
+                        $('#play_pause_button img').attr('src', "img/play_icon.svg");
+                    }
+                    break;
+                case 'video_closed':
+                    $('.screen').css({'height':window.innerHeight-$('header').height(), "overflow":"hidden"});
+                    $('.video_asset').removeClass('started');
+                    break;
+                case 'video_muted':
+                    if($('#mute_button img').attr('src') === "img/audio_icon.svg"){
+                        $('#mute_button img').attr('src', "img/mute_icon.svg");
+                    }else{
+                        $('#mute_button img').attr('src', "img/audio_icon.svg");
+                    }
+                    break;
+                case 'drawer':
+                    /* TODO CREATE DRAWING CANVAS draing page load */
+                    break;
+                case 'fast_forward':
+                    
+                    break;
+                case 'fast_backward':
+                    
+                    break;
+                case 'video_audio':
+                    //$('.video_asset').removeClass('started');
+                    //$('.screen').css({'height':window.innerHeight-$('header').height(), "overflow":"hidden"});
                     break;
                 default:
                     break;

@@ -23,15 +23,38 @@
         <title>NJOY</title>
     </head>
     <body>
+        <div class="video_asset">
+            <div class="player_nav">
+                <div class="icon audio" id="fast_backward">
+                  <img src="img/fast_forward_icon.svg"/>
+                </div>
+                <div class="icon play" id="play_pause_button">
+                  <img src="img/play_icon.svg"/>
+                </div>
+                <div class="icon audio" id="fast_forward">
+                  <img src="img/fast_backward_icon.svg"/>
+                </div>
+                <!--<div class="icon audio" id="mute_button">
+                  <img src="img/audio_icon.svg"/>
+                </div>-->
+                <div class="icon audio" id="quit_video_button">
+                  <img src="img/stop_icon.svg"/>
+                </div>
+            </div>
+        </div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="js/navigation.js"></script>
         <script type="text/javascript" src="js/ui.js"></script>
         <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="node_modules/cordova-jquery/cordova-jquery.js"></script>
         <script type="text/javascript" src="node_modules/backbone/backbone-min.js"></script>
+        <script type="text/javascript" src="node_modules/jquery-lazyload/jquery.scrollstop.js"></script>
+        <script type="text/javascript" src="node_modules/jquery-lazyload/jquery.lazyload.js"></script>
         <script type="text/javascript" src="node_modules/underscore/underscore-min.js"></script>
         <script type="text/javascript" src="node_modules/gsap/src/minified/TweenMax.min.js"></script>
         <script type="text/javascript" src="node_modules/iscroll/build/iscroll-lite.js"></script>
         <script type="text/javascript" src="js/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="js/EaselJS/lib/easeljs-0.8.1.combined.js"></script>
     </body>
 </html>

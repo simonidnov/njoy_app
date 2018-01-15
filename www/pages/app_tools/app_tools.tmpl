@@ -27,7 +27,7 @@
         <div class="scroller">
             <div class="column">
                 <% if(typeof app.selected_app.introduction.video !== "undefined" && app.selected_app.introduction.video !== ""){ %>
-                    <video controls class="video_preview" poster="<%= app.ip+"/"+(app.selected_app.introduction.video.replace('mp4', 'png')) %>">
+                    <video controls preload="none" class="video_preview" poster="<%= app.ip+"/"+(app.selected_app.introduction.video.replace('mp4', 'png')) %>">
                         <source src="<%= app.ip+"/"+(app.selected_app.introduction.video.replace('webm', 'mp4')) %>" type="video/mp4">
                     </video>
                 <% } %>
@@ -47,19 +47,10 @@
             </div>
         </div>
     </div>
-</div>
-<div class="wrapper" id="components_scroll">
-    <div class="scroller">
-        <div class="column components">
+    <div class="wrapper" id="components_scroll">
+        <div class="scroller">
+            <div class="column components">
+            </div>
         </div>
-    </div>
-</div>
-<div class="video_asset">
-    <div class="player_nav">
-        <div class="icon play" id="play_pause_button"></div>
-        <div class="icon audio" id="mute_button"></div>
-    </div>
-    <div class="seeker">
-        <div class="progress"></div>
     </div>
 </div>

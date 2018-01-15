@@ -43,7 +43,7 @@
     content: '';
     width: 48px;
     height: 48px;
-    background-image: url(../img/cast_screen.svg);
+    background-image: url(../img/cast_screen_white.svg);
     background-size: 80%;
     background-position: center center;
     background-repeat: no-repeat;
@@ -81,15 +81,14 @@ video{
     height:160px;
     height:auto;
     border-bottom:1px solid #E3E3E3;
+    display: table;
 }
-
-
 /* ------------- PICTURE GALLERY --------------- */
 .galery_list .picture_gallery{
     padding : 0;
     margin  : 10px;
     display : inline-grid;
-    width:50%;
+    width:45%;
     box-sizing: border-box;
     max-width:300px;
     -moz-box-shadow: 0px 0px 25px -10px #656565;
@@ -100,7 +99,7 @@ video{
 }
 .galery_list .picture_gallery .pix{
     width : 100%;
-    height: 140px;
+    height: 140px !important;
     background-size: cover;
     background-position: center center;
 }
@@ -109,16 +108,19 @@ video{
     padding : 0;
     margin  : 10px;
     display : inline-grid;
-    width:50%;
+    width:80%;
     box-sizing: border-box;
     max-width:300px;
+    overflow: hidden;
     -moz-box-shadow: 0px 0px 25px -10px #656565;
     -webkit-box-shadow: 0px 0px 25px -10px #656565;
     -o-box-shadow: 0px 0px 25px -10px #656565;
     box-shadow: 0px 0px 25px -10px #656565;
     filter:progid:DXImageTransform.Microsoft.Shadow(color=#656565, Direction=NaN, Strength=25);
 }
-
+.playlist_video li video, .playlist_video li audio{
+    width:100%;
+}
 
 /* ------------- TAB BAR MENU --------------- */
 .tab_bar{
@@ -132,12 +134,15 @@ video{
     height: 48px;
     overflow: hidden;
     position: relative;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling:touch;
 }
 .tab_bar ul{
     margin:0;
     padding:0;
     position: absolute;
-    display: inline-block;
+    display: inline-flex;
     left:0;
     right:0;
     margin:auto;
@@ -150,7 +155,7 @@ video{
     line-height: 48px;
     text-align: center;
     color:#333;
-    display: inline-flex;
+    display: table;
     height:48px;
     overflow: hidden;
     cursor: pointer;

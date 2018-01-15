@@ -4,7 +4,7 @@ var default_class = {
             app.socket.emit('njoy', {status:"disconnect", user_name:app.infos.user_name, uuid:app.infos.uuid});
         }
         $('#ip_config').val("http://10.3.141.1:3000");
-        $('#connect_button').off('click').on('click', function(){
+        $('#connect_button').off(ui.event).on(ui.event, function(){
             app.ip = $('#ip_config').val();
             app.init_socket(function(e){
                 console.log("inited ", e);
@@ -17,7 +17,7 @@ var default_class = {
                 }
             });
         });
-        $('#wifi_settings').on('click', function(e){
+        $('#wifi_settings').on(ui.event, function(e){
             ui.open_wifi_settings();
             e.preventDefault();
         });

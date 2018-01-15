@@ -3,7 +3,7 @@
 <% if(typeof jingle !== "undefined"){ %>
     <% if(jingle.type === "video"){ %>
         <div class="jingle">
-            <video controls poster="<%= app.ip+"/"+(jingle.file.replace('mp4', 'png')) %>">
+            <video preload="none" controls poster="<%= app.ip+"/"+(jingle.file.replace('mp4', 'png')) %>">
                 <source src="<%= app.ip+"/"+(jingle.file.replace('webm', 'mp4')) %>" type="video/mp4">
             </video>
             <div class="cast_button" data-action="cast" data-type="video" data-file="<%= jingle.file %>">Diffuser le Jingle</div>
@@ -59,7 +59,7 @@
             <ul class="galery_list">
                 <% for(var g=0; g<comp_datas.length; g++){ %>
                     <li class="picture_gallery">
-                        <div class="pix" style="background-image:url(<%= app.ip+'/'+comp_datas[g].file %>);"></div>
+                        <div class="pix lazy" style="background-image:url();" data-original="<%= app.ip+'/'+comp_datas[g].file %>"></div>
                         <h3><%= comp_datas[g].label %></h3>
                         <% if(_.keys(comp_datas[g].datas).length > 0){ %>
                             <ul class="datas_list">
@@ -81,7 +81,12 @@
                                 <div id="1" class="radio_ui" data-checked="false" data-action="response" data-type="fail"></div>
                             </li>
                         </ul>
-                        <div class="cast_button" data-action="cast" data-type="picture" data-file="<%= comp_datas[g].file %>" data-chronos="<%= comp_datas[g].chronos %>">Diffuser</div>
+                        <% if(typeof comp_datas[g].action !== "undefined"){ %>
+                            <div class="cast_button" data-navigate="<%= comp_datas[g].action %>" data-type="picture" data-file="<%= comp_datas[g].file %>" data-chronos="<%= comp_datas[g].chronos %>"><%= comp_datas[g].action_label %></div>
+                        <% }else{ %>
+                            <div class="cast_button" data-action="cast" data-type="picture" data-file="<%= comp_datas[g].file %>" data-chronos="<%= comp_datas[g].chronos %>">Diffuser</div>
+                        <% } %>
+                        
                     </li>
                 <% } %>
             </ul>
@@ -89,7 +94,7 @@
             <ul class="playlist_video">
                 <% for(var g=0; g<comp_datas.length; g++){ %>
                     <li>
-                        <video controls>
+                        <video controls preload="none" poster="<%= app.ip+"/"+(comp_datas[g].file.replace('mp4', 'png')) %>">
                             <source src="<%= app.ip+'/'+(comp_datas[g].file.replace('webm', 'mp4')) %>" type="video/mp4">
                         </video>
                         <span><%= comp_datas[g].label %></span>
@@ -101,9 +106,9 @@
             <ul class="playlist_video">
                 <% for(var g=0; g<comp_datas.length; g++){ %>
                     <li>
-                        <audio src="<%= app.ip+'/'+comp_datas[i].file %>" controls></audio>
-                        <span><%= comp_datas[i].label %></span>
-                        <div class="cast_button" data-action="cast" data-type="audio" data-file="<%= comp_datas[i].file %>">Diffuser</div>
+                        <audio preload="none" src="<%= app.ip+'/'+comp_datas[g].file %>" controls></audio>
+                        <span><%= comp_datas[g].label %></span>
+                        <div class="cast_button" data-action="cast" data-type="audio" data-file="<%= comp_datas[g].file %>">Diffuser</div>
                     </li>
                 <% } %>
             </ul>
