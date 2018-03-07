@@ -28,7 +28,11 @@ var app = {
     },
     socket: null,
     initialize: function() {
-        document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+        if(typeof cordova == "undefined"){
+            this.onDeviceReady();
+        }else{
+            document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+        }
     },
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
@@ -133,6 +137,7 @@ var app = {
         });
         
         app.socket.on('njoy', function(datas) {
+            console.log('datas :::: ', datas);
             switch (datas.status) {
                 case 'activities':
                     app.infos.activities = datas.activities;
@@ -181,8 +186,30 @@ var app = {
                     //$('.video_asset').removeClass('started');
                     //$('.screen').css({'height':window.innerHeight-$('header').height(), "overflow":"hidden"});
                     break;
+                case 'teams':
+                    app.teams = datas.datas.teams;
+                    ui.set_teams();
+                    console.log("teams ", datas.datas.teams);
+                    //$('.video_asset').removeClass('started');
+                    //$('.screen').css({'height':window.innerHeight-$('header').height(), "overflow":"hidden"});
+                    break;
+                case 'error':
+                    ui.popin({
+                        "title":datas.datas.title,
+                        "message":datas.datas.message,
+                        "buttons":[
+                            {"label":"OK"}
+                        ]
+                    }, function(e){
+                    });
+                    break;
                 default:
                     break;
+            }
+            if(typeof datas.teams !== "undefined"){
+                console.log("teams is defined :::: ", datas.teams);
+                app.teams = datas.teams;
+                ui.set_teams();
             }
             app.socket_callback(datas);
         });

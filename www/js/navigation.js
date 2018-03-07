@@ -14,7 +14,7 @@ var navigation = {
     set_listeners : function(){
         $(window).on('hashchange', $.proxy(function(){
             this.set_params();
-        }, this));  
+        }, this));
         if(window.location.hash === ""){
             window.location.hash = this.default_page;
         }else{
@@ -36,7 +36,7 @@ var navigation = {
         }, this));
     },
     navigate : function(){
-        
+
     },
     load_templates: function() {
         _.each(_.keys(this.templates), function(key, index) {

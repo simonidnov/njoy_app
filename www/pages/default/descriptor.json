@@ -7,7 +7,7 @@
     "nav_left":[
     ],
     "nav_right":[
-      {"label":"", "link":"/search", "icon":"search"}
+      {"label":"", "link":"/team", "icon":"team_icon"}
     ],
     "tab_bar______":[
       {"label":"link 1", "link":"/link", "icon":""},

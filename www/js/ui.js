@@ -17,8 +17,8 @@ var ui = {
         }
         this.load_templates();
         this.setListeners();
-        
-        
+
+
     },
     load_templates: function() {
         _.each(_.keys(this.templates), function(key, index) {
@@ -54,7 +54,7 @@ var ui = {
                     {"label":"button 1"},
                     {"label":"button 2"}
                 ]
-            }, function(e){console.log(e);});  
+            }, function(e){console.log(e);});
     },
     popin : function(params, callback){
         if($('#popin_ui_content').length > 0){
@@ -79,8 +79,105 @@ var ui = {
         }});
         ui.popin_callBack(e);
     },
+    openTeam : function(){
+      $('.teams').addClass('opened');
+      $('.teams .cross_button').off('click').on('click', $.proxy(function(){
+        this.closeTeam();
+      },this));
+        $('#add_team').off('click').on('click', function(e){
+            e.preventDefault();
+            if($('#team_name').val() === ""){
+                 ui.popin({
+                    "illus":"img/logout_illus.svg",
+                    "title":"TEAM",
+                    "message":"Pour ajouter une équipe vous devez indiquer un nom dans",
+                    "buttons":[
+                        {"label":"OK"}
+                    ]
+                }, function(e){
+                    if(parseInt(e) === 1){
+                        ui.navigate('/');
+                    }
+                });
+                return false;
+            } 
+            if(_.where(app.teams, {label:$('#team_name').val()}).length > 0){
+                ui.popin({
+                    "illus":"img/logout_illus.svg",
+                    "title":"TEAM",
+                    "message":"Le nom de l'équipe "+$('#team_name').val()+" existe déjà, veuillez choisir un nom d'équipe différent",
+                    "buttons":[
+                        {"label":"OK"}
+                    ]
+                }, function(e){
+                    if(parseInt(e) === 1){
+                        ui.navigate('/');
+                    }
+                });
+                return false;
+            }
+            app.socket.emit("njoy", {
+                status:"new_team",
+                new_team:{
+                    label:$('#team_name').val(),
+                    score:0
+                }
+            });
+            $('#team_name').val('');
+        });
+    },
+    closeTeam : function(){
+      $('.teams').removeClass('opened');
+    },
+    set_teams : function(){
+        $('#team_list').html('');
+        if(typeof app.teams === "undefined"){
+            return false;
+        }
+        var temp_team = _.template($('#team_template').html());
+        for(var i=0; i<app.teams.length; i++){
+            app.teams[i].id = i;
+            $('#team_list').append(temp_team(app.teams[i]));
+        }
+        $('.delete_team_button').off('click').on('click', function(){
+            app.socket.emit("njoy", {
+                status:"delete_team", 
+                id:$(this).attr('data-id')
+            });
+        });
+        $('.less_score_button').off('click').on('click', function(){
+            console.log('less', $(this).attr('data-id'));
+            $(this).parent().find('.score').val(parseInt($(this).parent().find('.score').val())-1);
+            app.socket.emit("njoy", {
+                status:"team_score", 
+                id:$(this).attr('data-id'),
+                score:$(this).parent().find('.score').val()
+            });
+        });
+        $('.more_score_button').off('click').on('click', function(){
+            console.log('more', $(this).attr('data-id'));
+            $(this).parent().find('.score').val(parseInt($(this).parent().find('.score').val())+1);
+            app.socket.emit("njoy", {
+                status:"team_score", 
+                id:$(this).attr('data-id'),
+                score:$(this).parent().find('.score').val()
+            });
+        });
+        $('.set_score_input').off('blur').on('blur', function(){
+            console.log('change', $(this).attr('data-id'));
+            app.socket.emit("njoy", {
+                status:"team_score", 
+                id:$(this).attr('data-id'),
+                score:$(this).parent().find('.score').val()
+            });
+        });
+    },
     setListeners: function() {
         $('[data-navigate]').off(ui.event).on(ui.event, function(event) {
+            if($(this).attr('data-navigate') === "/team"){
+              ui.openTeam();
+              return false;
+            }
             if(typeof $(this).attr('data-direction') !== "undefined"){
                 ui.direction = $(this).attr('data-direction');
             }
@@ -139,13 +236,13 @@ var ui = {
                             break;
                         case 'object':
                             status = {
-                                "status":"object", 
-                                "menu":$(this).attr('data-menu'), 
-                                "component":$(this).attr('data-component'), 
+                                "status":"object",
+                                "menu":$(this).attr('data-menu'),
+                                "component":$(this).attr('data-component'),
                                 "component_id":$(this).attr('data-componentid'),
                                 "tools":app.selected_tool
                             }
-                            
+
                             app.socket.emit("njoy", status);
                             //,"selected_app":app.selected_app
                             break;
@@ -161,8 +258,8 @@ var ui = {
                 case 'response':
                     $(this).addClass('checked');
                     app.socket.emit("njoy", {
-                        "status":$(this).attr('data-type'), 
-                        "response":$(this).attr('data-id'), 
+                        "status":$(this).attr('data-type'),
+                        "response":$(this).attr('data-id'),
                         "type":$(this).attr('data-type')
                     });
                     break;
@@ -189,13 +286,13 @@ var ui = {
                 "message":"Si vous continuez vous allez vous déconnecter du serveur.<br/>Êtes vous certain de vouloir continuer ?",
                 "buttons":[
                     {"label":"Annuler"},
-                    {"label":"Déconnexion", class:"error"}
+                    {"label":"Déconnexion", "class":"error"}
                 ]
             }, function(e){
                 if(parseInt(e) === 1){
                     ui.navigate('/');
                 }
-            }); 
+            });
             return false;
         }
         //window.history.pushState("", "", url);
@@ -242,7 +339,7 @@ var ui = {
                     });
                 }
                 /* load default page class then init there */
-                $.getScript('pages/' + ui.page_params.page + '/' + ui.descriptor.class + '.js', function(e) {
+                $.getScript('pages/' + (ui.page_params.page) + '/' + (ui.descriptor.class) + '.js', function(e) {
                     if($('body main.app .screen').length > 2){
                         for(var i=0; i<$('body main.app .screen').length-1; i++){
                             $('body main.app .screen').eq(i).remove();
@@ -267,7 +364,7 @@ var ui = {
                                 ui.init_scroll_view();
                                 $('.blocker').remove();
                             }
-                        }); 
+                        });
                         ui.direction = "";
                     } else {
                         $('body main.app .screen').last().css('left', '0%');
@@ -291,7 +388,7 @@ var ui = {
                     $('footer').css('bottom', '0px');
                 }
                 ui.setListeners();
-                
+
             });
         });
     },
@@ -321,6 +418,17 @@ var ui = {
                     $('[data-navigate="'+ui.descriptor.header.nav_left[i].link+'"]').attr('data-direction', ui.descriptor.header.nav_left[i].direction);
                 }
             }
+            for(var i=0; i<ui.descriptor.header.nav_right.length; i++){
+                if($('.right_nav').length === 0){
+                    $('header').append('<div class="right_nav"></div>');
+                }else{
+                    $('header .right_nav').html('');
+                }
+                $('header .right_nav').append('<div class="head_button" data-navigate="'+ui.descriptor.header.nav_right[i].link+'"><div class="icon" style="background-image:url(img/'+ui.descriptor.header.nav_right[i].icon+'.svg);"></div><span>'+ui.descriptor.header.nav_right[i].label+'</span></div>');
+                if(typeof ui.descriptor.header.nav_right[i].direction !== "undefined"){
+                    $('[data-navigate="'+ui.descriptor.header.nav_right[i].link+'"]').attr('data-direction', ui.descriptor.header.nav_right[i].direction);
+                }
+            }
         }
         if (!_.isUndefined(ui.descriptor.header.tab_bar) && ui.descriptor.header.tab_bar.length > 0) {
             $.get('views/header-navbar.tmpl', $.proxy(function(e) {
@@ -348,7 +456,7 @@ var ui = {
                 });
                 /*
                 ui.navbar_scroll = new IScroll('#header_navbar_wrapper',{
-                    mouseWheel:true, 
+                    mouseWheel:true,
                     click: true,
                     useTransition: true
                 });
@@ -364,7 +472,7 @@ var ui = {
             if(typeof IScroll !== "undefined"){
                 /*
                 ui.page_scroll = new IScroll('#screen_wrapper',{
-                    mouseWheel:true, 
+                    mouseWheel:true,
                     click: true,
                     useTransition: true
                 });
@@ -376,7 +484,7 @@ var ui = {
         if (window.cordova && window.cordova.plugins.settings) {
             console.log('openNativeSettingsTest is active');
             window.cordova.plugins.settings.open(
-                "wifi", 
+                "wifi",
                 function() {
                     console.log('opened settings');
                 },
@@ -400,7 +508,7 @@ var ui = {
                     ]
                 }, function(e){
                     ui.open_wifi_settings();
-                }); 
+                });
             }
         }
     },
@@ -416,7 +524,7 @@ var ui = {
                 {"label":"J'ai compris", class:"success"}
             ]
         }, function(e){
-        }); 
+        });
     },
     open_webview : function(){
         if (cordova && cordova.InAppBrowser) {

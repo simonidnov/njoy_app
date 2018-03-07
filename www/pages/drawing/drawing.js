@@ -1,7 +1,6 @@
 /*
   TODO ::: SET EMITER NODE WEBSITE SOCKET THEN DISPLAY MULTISCREEN
 */
-
 var drawing = {
     drawing_tool: null,
     init: function () {

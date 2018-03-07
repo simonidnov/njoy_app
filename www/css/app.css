@@ -110,6 +110,11 @@ input[type="email"]{
   text-align: center;
   color:#6D6F71;
   outline: none;
+    -webkit-touch-callout: all;
+    -webkit-user-select: all;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
 }
 input.upper{
   text-transform: uppercase;
