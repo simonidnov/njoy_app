@@ -225,7 +225,12 @@ var ui = {
                             $(this).find('img').attr('src', "img/pause_icon.svg");
                         }
                     }
-                    status['tools'] = app.selected_tool;
+                    if(typeof $(this).attr('data-selectedapp') !== "undefined"){
+                        //delete app.selected_tool;
+                        status['tools'] = app.selected_app;
+                    }else{
+                        status['tools'] = app.selected_tool;    
+                    }
                     app.socket.emit("njoy", status);
                     /*switch($(this).attr('data-type')){
                         case 'video':

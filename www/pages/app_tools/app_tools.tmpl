@@ -31,9 +31,13 @@
                         <source src="<%= app.ip+"/"+(app.selected_app.introduction.video.replace('webm', 'mp4')) %>" type="video/mp4">
                     </video>
                 <% } %>
-                <div class="item_button intro" data-action="cast" data-type="video" data-file="<%= app.selected_app.introduction.video %>">
+                <div class="item_button intro" data-action="cast" data-type="video" data-file="<%= app.selected_app.introduction.video %>" data-selectedapp="true">
                     <div class="icon cast"><img src="img/cast.svg" width="50"/></div>
                     <span>Jouer l'introduction</span>
+                </div>
+                <div class="item_button intro" data-action="cast" data-type="splash" data-selectedapp="true">
+                    <div class="icon cast"><img src="img/cast.svg" width="50"/></div>
+                    <span>Afficher le splashscreen</span>
                 </div>
                 <h3>Applications</h3>
                 <ul class="tools_list">

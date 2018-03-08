@@ -80,34 +80,8 @@ var app = {
     onBatteryLow : function(){
         ui.battery_low();
     },
-    init_socket:function(callback){
-        this.callback = callback;
-        //this.ip = window.location.origin;
-        app.infos.uuid = new Date().getTime();
-        app.socket_callback = function(e) {
-            console.log(e);
-        }
-        app.socket = io(this.ip, {
-            transports: ['websocket', 'xhr-polling']
-        });
-        app.socket.on('error', function(e) {
-            app.callback({
-                status: "error_socket",
-                datas: e
-            });
-        });
-        app.socket.on('connect_failed', function(e) {
-            app.callback({
-                status: "connect_failed"
-            });
-        });
-        app.socket.on('connect', function(e) {
-            app.callback({
-                status: "socket_connected"
-            });
-        });
-        
-        /* VIDEO ASSETS EVENTS */
+    set_video_assets:function(){
+         /* VIDEO ASSETS EVENTS */
         $('.video_asset #play_pause_button').off(ui.event).on(ui.event, function(){
           if($('.video_asset #play_pause_button img').attr('src') === "img/play_icon.svg"){
             app.socket.emit("njoy", {status:"pause_video"});
@@ -135,8 +109,9 @@ var app = {
         
         $('.video_asset #fast_backward').off(ui.event).on(ui.event, function(){
             app.socket.emit("njoy", {status:"fast_backward_video"});
-        });
-        
+        });  
+    },
+    set_audio_assets:function(){
         /* AUDIO ASSETS EVENTS */
         $('.audio_asset #play_pause_button').off(ui.event).on(ui.event, function(e){
           if($('.audio_asset #play_pause_button img').attr('src') === "img/play_icon.svg"){
@@ -166,7 +141,36 @@ var app = {
         
         $('.audio_asset #fast_backward').off(ui.event).on(ui.event, function(){
             app.socket.emit("njoy", {status:"fast_backward_audio"});
+        });  
+    },
+    init_socket:function(callback){
+        this.callback = callback;
+        //this.ip = window.location.origin;
+        app.infos.uuid = new Date().getTime();
+        app.socket_callback = function(e) {
+            console.log(e);
+        }
+        app.socket = io(this.ip, {
+            transports: ['websocket', 'xhr-polling']
         });
+        app.socket.on('error', function(e) {
+            app.callback({
+                status: "error_socket",
+                datas: e
+            });
+        });
+        app.socket.on('connect_failed', function(e) {
+            app.callback({
+                status: "connect_failed"
+            });
+        });
+        app.socket.on('connect', function(e) {
+            app.callback({
+                status: "socket_connected"
+            });
+        });
+        app.set_video_assets();
+        app.set_audio_assets();
         
         app.socket.on('njoy', function(datas) {
             console.log('datas :::: ', datas);
@@ -175,6 +179,7 @@ var app = {
                     app.infos.activities = datas.activities;
                     break;
                 case 'video_started':
+                    app.set_video_assets();
                     $('.video_asset #mute_button img').attr('src', "img/audio_icon.svg");
                     $('.video_asset #play_pause_button img').attr('src', "img/pause_icon.svg");
                     $('.video_asset').addClass('started');
@@ -207,6 +212,7 @@ var app = {
                     break;
                     
                 case 'audio_played':
+                    app.set_audio_assets();
                     $('.audio_asset #mute_button img').attr('src', "img/audio_icon.svg");
                     $('.audio_asset #play_pause_button img').attr('src', "img/pause_icon.svg");
                     $('.audio_asset').addClass('started');
