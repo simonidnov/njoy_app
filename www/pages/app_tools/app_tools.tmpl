@@ -8,7 +8,7 @@
                     <h3><%= app.selected_app.tools[t].label %></h3>
                     <ul class="playlist_list">
                     <% for(var k=0; k<app.selected_app.tools[t].playlist.length; k++){ %>
-                        <li data-action="cast" data-type="<%= app.selected_app.tools[t].playlist[k].type %>" data-file="<%= app.selected_app.tools[t].playlist[k].file %>">
+                        <li data-action="cast" data-type="<%= app.selected_app.tools[t].playlist[k].type %>" data-file="<%= app.selected_app.tools[t].playlist[k].file %>" data-data="<%= app.selected_app.tools[t].playlist[k].data %>">
                             <img class="play_icon" src="img/play_icon.svg" width="40"/>
                             <span class="label"><%= app.selected_app.tools[t].playlist[k].label %></span>
                         </li>

@@ -210,6 +210,9 @@ var ui = {
                     if(typeof $(this).attr('data-chronos') !== "undefined"){
                         status['chronos'] = $(this).attr('data-chronos');
                     }
+                    if(typeof $(this).attr('data-data') !== "undefined"){
+                        status['data'] = $(this).attr('data-data');
+                    }
                     if(typeof $(this).attr('data-chronostype') !== "undefined"){
                         status['chronos_type'] = $(this).attr('data-chronostype');
                     }
