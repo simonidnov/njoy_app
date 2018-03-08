@@ -65,7 +65,6 @@ var app = {
                         call("success");
                         console.log("a ", a);
                     } catch(e) {
-                        alert(e);
                         call("fail"); // error in the above string (in this case, yes)!
                         return false;
                     }
@@ -107,8 +106,10 @@ var app = {
                 status: "socket_connected"
             });
         });
-        $('#play_pause_button').off(ui.event).on(ui.event, function(){
-          if($('#play_pause_button img').attr('src') === "img/play_icon.svg"){
+        
+        /* VIDEO ASSETS EVENTS */
+        $('.video_asset #play_pause_button').off(ui.event).on(ui.event, function(){
+          if($('.video_asset #play_pause_button img').attr('src') === "img/play_icon.svg"){
             app.socket.emit("njoy", {status:"pause_video"});
           }else{
             app.socket.emit("njoy", {status:"play_video"});
@@ -116,24 +117,55 @@ var app = {
           //app.socket.emit("njoy", {status:"pause_video"});
           console.log('play pause');
         });
-        $('#mute_button').off(ui.event).on(ui.event, function(){
-          if($('#mute_button img').attr('src') === "img/audio_icon.svg"){
+        $('.video_asset #mute_button').off(ui.event).on(ui.event, function(){
+          if($('.video_asset #mute_button img').attr('src') === "img/audio_icon.svg"){
             app.socket.emit("njoy", {status:"mute_video"});
           }else{
             app.socket.emit("njoy", {status:"audio_video"});
           }
           console.log('mute');
         });
-        $('#quit_video_button').off(ui.event).on(ui.event, function(){
+        $('.video_asset #quit_video_button').off(ui.event).on(ui.event, function(){
             app.socket.emit("njoy", {status:"stop_video"});
         });
         
-        $('#fast_forward').off(ui.event).on(ui.event, function(){
+        $('.video_asset #fast_forward').off(ui.event).on(ui.event, function(){
             app.socket.emit("njoy", {status:"fast_forward_video"});
         });
         
-        $('#fast_backward').off(ui.event).on(ui.event, function(){
+        $('.video_asset #fast_backward').off(ui.event).on(ui.event, function(){
             app.socket.emit("njoy", {status:"fast_backward_video"});
+        });
+        
+        /* AUDIO ASSETS EVENTS */
+        $('.audio_asset #play_pause_button').off(ui.event).on(ui.event, function(e){
+          if($('.audio_asset #play_pause_button img').attr('src') === "img/play_icon.svg"){
+            app.socket.emit("njoy", {status:"audio_resume"});
+          }else{
+            app.socket.emit("njoy", {status:"audio_pause"});
+          }
+          e.preventDefault();
+          //app.socket.emit("njoy", {status:"pause_video"});
+          console.log('play pause audio');
+        });
+        $('.audio_asset #mute_button').off(ui.event).on(ui.event, function(e){
+          if($('.audio_asset #mute_button img').attr('src') === "img/audio_icon.svg"){
+            app.socket.emit("njoy", {status:"audio_volume"});
+          }else{
+            app.socket.emit("njoy", {status:"audio_mute"});
+          }
+          e.preventDefault();
+        });
+        $('.audio_asset #stop_audio_button').off(ui.event).on(ui.event, function(){
+            app.socket.emit("njoy", {status:"audio_stop"});
+        });
+        
+        $('.audio_asset #fast_forward').off(ui.event).on(ui.event, function(){
+            app.socket.emit("njoy", {status:"fast_forward_audio"});
+        });
+        
+        $('.audio_asset #fast_backward').off(ui.event).on(ui.event, function(){
+            app.socket.emit("njoy", {status:"fast_backward_audio"});
         });
         
         app.socket.on('njoy', function(datas) {
@@ -143,23 +175,23 @@ var app = {
                     app.infos.activities = datas.activities;
                     break;
                 case 'video_started':
-                    $('#mute_button img').attr('src', "img/audio_icon.svg");
-                    $('#play_pause_button img').attr('src', "img/pause_icon.svg");
+                    $('.video_asset #mute_button img').attr('src', "img/audio_icon.svg");
+                    $('.video_asset #play_pause_button img').attr('src', "img/pause_icon.svg");
                     $('.video_asset').addClass('started');
                     $('.screen').css({'height':window.innerHeight-$('header').height()-60, "overflow":"hidden"});
                     break;
                 case 'video_pause':
-                    if($('#play_pause_button img').attr('src') === "img/play_icon.svg"){
-                        $('#play_pause_button img').attr('src', "img/pause_icon.svg");
+                    if($('.video_asset #play_pause_button img').attr('src') === "img/play_icon.svg"){
+                        $('.video_asset #play_pause_button img').attr('src', "img/pause_icon.svg");
                     }else{
-                        $('#play_pause_button img').attr('src', "img/play_icon.svg");
+                        $('.video_asset #play_pause_button img').attr('src', "img/play_icon.svg");
                     }
                     break;
                 case 'video_play':
-                    if($('#play_pause_button img').attr('src') === "img/play_icon.svg"){
-                        $('#play_pause_button img').attr('src', "img/pause_icon.svg");
+                    if($('.video_asset #play_pause_button img').attr('src') === "img/play_icon.svg"){
+                        $('.video_asset #play_pause_button img').attr('src', "img/pause_icon.svg");
                     }else{
-                        $('#play_pause_button img').attr('src', "img/play_icon.svg");
+                        $('.video_asset #play_pause_button img').attr('src', "img/play_icon.svg");
                     }
                     break;
                 case 'video_closed':
@@ -167,12 +199,36 @@ var app = {
                     $('.video_asset').removeClass('started');
                     break;
                 case 'video_muted':
-                    if($('#mute_button img').attr('src') === "img/audio_icon.svg"){
-                        $('#mute_button img').attr('src', "img/mute_icon.svg");
+                    if($('.video_asset #mute_button img').attr('src') === "img/audio_icon.svg"){
+                        $('.video_asset #mute_button img').attr('src', "img/mute_icon.svg");
                     }else{
-                        $('#mute_button img').attr('src', "img/audio_icon.svg");
+                        $('.video_asset #mute_button img').attr('src', "img/audio_icon.svg");
                     }
                     break;
+                    
+                case 'audio_played':
+                    $('.audio_asset #mute_button img').attr('src', "img/audio_icon.svg");
+                    $('.audio_asset #play_pause_button img').attr('src', "img/pause_icon.svg");
+                    $('.audio_asset').addClass('started');
+                    $('.screen').css({'height':window.innerHeight-$('header').height()-60, "overflow":"hidden"});
+                    break;
+                case 'audio_paused':
+                    $('.audio_asset #play_pause_button img').attr('src', "img/play_icon.svg");
+                    break;
+                case 'audio_play':
+                    $('.audio_asset #play_pause_button img').attr('src', "img/pause_icon.svg");
+                    break;
+                case 'audio_stopped':
+                    $('.screen').css({'height':window.innerHeight-$('header').height(), "overflow":"hidden"});
+                    $('.audio_asset').removeClass('started');
+                    break;
+                case 'audio_muted':
+                    $('.audio_asset #mute_button img').attr('src', "img/audio_icon.svg");
+                    break;
+                case 'audio_volumed':
+                    $('.audio_asset #mute_button img').attr('src', "img/mute_icon.svg");
+                    break;
+                    
                 case 'drawer':
                     /* TODO CREATE DRAWING CANVAS draing page load */
                     break;

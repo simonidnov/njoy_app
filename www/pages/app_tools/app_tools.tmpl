@@ -8,7 +8,7 @@
                     <h3><%= app.selected_app.tools[t].label %></h3>
                     <ul class="playlist_list">
                     <% for(var k=0; k<app.selected_app.tools[t].playlist.length; k++){ %>
-                        <li data-action="cast" data-type="audio" data-file="<%= app.selected_app.tools[t].playlist[k].file %>">
+                        <li data-action="cast" data-type="<%= app.selected_app.tools[t].playlist[k].type %>" data-file="<%= app.selected_app.tools[t].playlist[k].file %>">
                             <img class="play_icon" src="img/play_icon.svg" width="40"/>
                             <span class="label"><%= app.selected_app.tools[t].playlist[k].label %></span>
                         </li>
@@ -18,7 +18,7 @@
                 <h3>Options De l'application</h3>
                 <ul class="playlist_list">
                     <li id="connexion_check" style="height:50px; line-height:50px;">vérifier la connexion NJOY</li>
-                    <li id="server_reboot" style="height:50px; line-height:50px;">Redémarrer l'application</li>
+                    <li id="server_reboot" data-action="cast" data-type="reboot" style="height:50px; line-height:50px;">Redémarrer l'application</li>
                 </ul>
             </div>
         </div>

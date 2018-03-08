@@ -20,6 +20,9 @@ var app_tools = {
                 useTransition: true
             });
             */
+            $('#connexion_check').off('click').on('click', function(){
+                ui.open_wifi_settings();
+            });
             $.get('pages/app_tools/components.tmpl', $.proxy(function(e) {
                 this.component_template = _.template(e);
             }, this));
