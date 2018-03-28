@@ -61,21 +61,21 @@
             </div>
         </div>
         
-        <!--
         <div class="audio_asset player_audio_video">
             <div class="player_nav">
-                <div class="icon play" id="play_pause_button">
-                  <img src="img/play_icon.svg"/>
-                </div>
-                <div class="icon audio" id="mute_button">
-                  <img src="img/audio_icon.svg"/>
-                </div>
-                <div class="icon audio" id="stop_audio_button">
-                  <img src="img/stop_icon.svg"/>
+                <div class="center_assets">
+                    <input class="seeker" id="seeker" name="seeker" type="range" max="100" min="0" step="1" value="0" >
+                    <div class="icon play" id="play_pause_button">
+                      <img src="img/play_icon.svg"/>
+                    </div>
+                    <div class="icon stop" id="quit_video_button">
+                      <img src="img/stop_icon.svg"/>
+                    </div>
+                    <input class="seeker volume" id="volume" name="volume" type="range" value="100" max="100" min="0" step="1">
                 </div>
             </div>
         </div>
-        -->
+        
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="node_modules/backbone/backbone-min.js"></script>
         <script type="text/javascript" src="node_modules/underscore/underscore-min.js"></script>
