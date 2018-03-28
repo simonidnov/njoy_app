@@ -146,7 +146,6 @@ var ui = {
             });
         });
         $('.less_score_button').off('click').on('click', function(){
-            console.log('less', $(this).attr('data-id'));
             $(this).parent().find('.score').val(parseInt($(this).parent().find('.score').val())-1);
             app.socket.emit("njoy", {
                 status:"team_score", 
@@ -155,7 +154,6 @@ var ui = {
             });
         });
         $('.more_score_button').off('click').on('click', function(){
-            console.log('more', $(this).attr('data-id'));
             $(this).parent().find('.score').val(parseInt($(this).parent().find('.score').val())+1);
             app.socket.emit("njoy", {
                 status:"team_score", 
@@ -164,7 +162,6 @@ var ui = {
             });
         });
         $('.set_score_input').off('blur').on('blur', function(){
-            console.log('change', $(this).attr('data-id'));
             app.socket.emit("njoy", {
                 status:"team_score", 
                 id:$(this).attr('data-id'),
@@ -285,7 +282,7 @@ var ui = {
         }*/
         app.socket_callback = null;
         app.socket_callback = function(e) {
-            console.log(e);
+            //console.log(e);
         }
         if(url.indexOf('logout') !== -1){
             ui.popin({

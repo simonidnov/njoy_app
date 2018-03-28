@@ -26,6 +26,12 @@ var app = {
         regis: false,
         users: []
     },
+    current_video:{
+        name:"",
+        position:0,
+        duration:0,
+        volume:1
+    },
     socket: null,
     initialize: function() {
         if(typeof cordova == "undefined"){
@@ -81,35 +87,33 @@ var app = {
         ui.battery_low();
     },
     set_video_assets:function(){
-         /* VIDEO ASSETS EVENTS */
-        $('.video_asset #play_pause_button').off(ui.event).on(ui.event, function(){
-          if($('.video_asset #play_pause_button img').attr('src') === "img/play_icon.svg"){
-            app.socket.emit("njoy", {status:"pause_video"});
-          }else{
-            app.socket.emit("njoy", {status:"play_video"});
-          }
-          //app.socket.emit("njoy", {status:"pause_video"});
-          console.log('play pause');
+        
+        $(".video_asset #seeker").on("change", function(e) { 
+            var sec = Math.round((app.current_video.duration/100)*$('#seeker').val());
+            console.log("seek to ", sec);
+            //app.socket.emit("njoy", {status:"seek_video", seek:sec});
+            app.socket.emit("njoy", {status:"position_video", position:sec});
         });
-        $('.video_asset #mute_button').off(ui.event).on(ui.event, function(){
-          if($('.video_asset #mute_button img').attr('src') === "img/audio_icon.svg"){
-            app.socket.emit("njoy", {status:"mute_video"});
-          }else{
-            app.socket.emit("njoy", {status:"audio_video"});
-          }
-          console.log('mute');
+        $(".video_asset #volume").on("change", function(e) { 
+            var vol = Math.abs($(".video_asset #volume").val()/100).toFixed(1);
+            console.log("set volume ::::::::::::::::: ", vol);
+            app.socket.emit("njoy", {status:"volume_video", volume:vol});
         });
+        
+        $('.video_asset #play_pause_button').off(ui.event).on(ui.event, function(e){
+            if($('.video_asset #play_pause_button img').attr('src') === "img/play_icon.svg"){
+                app.socket.emit("njoy", {status:"resume_video"});
+            }else{
+                app.socket.emit("njoy", {status:"pause_video"});
+            }
+            e.preventDefault();
+            //app.socket.emit("njoy", {status:"pause_video"});
+            console.log('play pause video');
+        });
+        
         $('.video_asset #quit_video_button').off(ui.event).on(ui.event, function(){
             app.socket.emit("njoy", {status:"stop_video"});
         });
-        
-        $('.video_asset #fast_forward').off(ui.event).on(ui.event, function(){
-            app.socket.emit("njoy", {status:"fast_forward_video"});
-        });
-        
-        $('.video_asset #fast_backward').off(ui.event).on(ui.event, function(){
-            app.socket.emit("njoy", {status:"fast_backward_video"});
-        });  
     },
     set_audio_assets:function(){
         /* AUDIO ASSETS EVENTS */
@@ -173,42 +177,46 @@ var app = {
         app.set_audio_assets();
         
         app.socket.on('njoy', function(datas) {
-            console.log('datas :::: ', datas);
             switch (datas.status) {
                 case 'activities':
                     app.infos.activities = datas.activities;
                     break;
                 case 'video_started':
                     app.set_video_assets();
-                    $('.video_asset #mute_button img').attr('src', "img/audio_icon.svg");
                     $('.video_asset #play_pause_button img').attr('src', "img/pause_icon.svg");
                     $('.video_asset').addClass('started');
-                    $('.screen').css({'height':window.innerHeight-$('header').height()-60, "overflow":"hidden"});
+                    $('.screen').css({'height':window.innerHeight-$('header').height()-$('.video_asset').height(), "overflow":"hidden"});
                     break;
                 case 'video_pause':
-                    if($('.video_asset #play_pause_button img').attr('src') === "img/play_icon.svg"){
-                        $('.video_asset #play_pause_button img').attr('src', "img/pause_icon.svg");
-                    }else{
-                        $('.video_asset #play_pause_button img').attr('src', "img/play_icon.svg");
-                    }
+                    $('.video_asset #play_pause_button img').attr('src', "img/play_icon.svg");
                     break;
-                case 'video_play':
-                    if($('.video_asset #play_pause_button img').attr('src') === "img/play_icon.svg"){
-                        $('.video_asset #play_pause_button img').attr('src', "img/pause_icon.svg");
-                    }else{
-                        $('.video_asset #play_pause_button img').attr('src', "img/play_icon.svg");
-                    }
+                case 'video_resume':
+                    $('.video_asset #play_pause_button img').attr('src', "img/pause_icon.svg");
                     break;
-                case 'video_closed':
+                case 'video_stopped':
                     $('.screen').css({'height':window.innerHeight-$('header').height(), "overflow":"hidden"});
                     $('.video_asset').removeClass('started');
                     break;
-                case 'video_muted':
-                    if($('.video_asset #mute_button img').attr('src') === "img/audio_icon.svg"){
-                        $('.video_asset #mute_button img').attr('src', "img/mute_icon.svg");
-                    }else{
-                        $('.video_asset #mute_button img').attr('src', "img/audio_icon.svg");
-                    }
+                case 'video_position':
+                    console.log("position_video ", datas);
+                    break;
+                case 'video_seek':
+                    console.log("video_seek ", datas);
+                    break;
+                case 'video_volume':
+                    console.log("video_volume :::: ", datas.volume);
+                    app.current_video.volume = datas.volume;
+                    $('#volume').val(parseFloat(datas.volume)*100);
+                    break;
+                case 'progress_video':
+                    //datas.position;
+                    //datas.duration;
+                    //datas.volume;
+                    app.current_video.position = datas.position;
+                    app.current_video.duration = datas.duration;
+                    //app.current_video.volume = datas.volume;
+                    $('.video_asset #seeker').val(((datas.position/datas.duration)*100));
+                    //$('#volume').val((datas.volume*100));
                     break;
                     
                 case 'audio_played':
@@ -315,7 +323,7 @@ var app = {
         };
     },
     receivedEvent: function(id) {
-        console.log('Received Event: ' + id);
+        //console.log('Received Event: ' + id);
     }
 };
 app.initialize();
