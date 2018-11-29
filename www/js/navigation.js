@@ -9,6 +9,7 @@ var navigation = {
         params:null
     },
     init:function(){
+        alert('init nav');
         this.load_templates();
     },
     set_listeners : function(){
@@ -31,12 +32,19 @@ var navigation = {
         this.load_dependencies();
     },
     load_dependencies : function(){
+        console.log('load dependencies');
         $.getJSON('pages/'+this.page_infos.params.page+'/descriptor.json', $.proxy(function(e){
+            console.log('set page params');
             this.page_infos.descriptor = JSON.parse(JSON.stringify(e));
+            console.log(this.page_infos.descriptor);
         }, this));
     },
     navigate : function(){
 
+    },
+    back : function(){
+        ui.direction = ui.descriptor.header.nav_left[0].direction;
+        ui.navigate(ui.descriptor.header.nav_left[0].link);
     },
     load_templates: function() {
         _.each(_.keys(this.templates), function(key, index) {

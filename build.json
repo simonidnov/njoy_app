@@ -1,0 +1,12 @@
+{
+  "android": {
+    "release": {
+      "keystore": "idkids.keystore",
+      "storePassword": "okaidi",
+      "alias": "upload",
+      "password" : "okaidi",
+      "keystoreType": "",
+      "debuggable":false
+    }
+  }
+}

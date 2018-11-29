@@ -27,8 +27,13 @@ var app_tools = {
                 this.component_template = _.template(e);
             }, this));
             $('[data-appid]').on(ui.event, function() {
+
                 app.selected_tool = app.selected_app.apps[parseInt($(this).attr('data-appid'))];
-                $('.column.components').html(app_tools.component_template(app.selected_app.apps[parseInt($(this).attr('data-appid'))]));
+
+                $('.column.components').html(app_tools.component_template(app.selected_tool));
+
+                $('#components_scroll').scrollTop(0);
+
                 app_tools.set_events();
                 //app_tools.components_scroll.refresh();
 

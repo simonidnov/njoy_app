@@ -1,0 +1,46 @@
+{
+  "label":"app_dashboard",
+  "version":"0.0.1",
+  "header":{
+    "display":true,
+    "datas":{},
+    "nav_left":[
+      {"label":"", "link":"/regis", "icon":"back", "direction":"back"}
+    ],
+    "nav_right":[
+      {"label":"", "link":"/team", "icon":"team_icon"}
+    ],
+    "tab_bar______":[
+      {"label":"link 1", "link":"/link", "icon":""},
+      {"label":"link 2", "link":"/link", "icon":""},
+      {"label":"link 3", "link":"/link", "icon":""},
+      {"label":"link 4", "link":"/link", "icon":""},
+      {"label":"link 5", "link":"/link", "icon":""},
+      {"label":"link 6", "link":"/link", "icon":""},
+      {"label":"link 7", "link":"/link", "icon":""},
+      {"label":"link 8", "link":"/link", "icon":""}
+    ]
+  },
+  "footer":{
+    "display":false,
+    "type":"tabs",
+    "datas":{
+      "control":"app_dashboard.tabs",
+      "tabs":[
+        {"label":"link 1", "link":"/link", "icon":""},
+        {"label":"link 2", "link":"/link", "icon":""},
+        {"label":"link 3", "link":"/link", "icon":""}
+      ]
+    }
+  },
+  "content":{
+    "display":true,
+    "uri":"app_dashboard.tmpl",
+    "datas":{}
+  },
+  "class":"app_dashboard",
+  "dependencies":{
+    "css":["app_dashboard.css"],
+    "js":[]
+  }
+}

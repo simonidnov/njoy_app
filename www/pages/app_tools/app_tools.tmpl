@@ -31,7 +31,7 @@
                         <source src="<%= app.ip+"/"+(app.selected_app.introduction.video.replace('webm', 'mp4')) %>" type="video/mp4">
                     </video>
                 <% } %>
-                <div class="item_button intro" data-action="cast" data-type="video" data-file="<%= app.selected_app.introduction.video %>" data-selectedapp="true">
+                <div class="item_button intro" data-action="cast" data-type="video" data-file="<%= app.selected_app.introduction.video %>" data-size="<%= app.selected_app.introduction.size %>" data-selectedapp="true">
                     <div class="icon cast"><img src="img/cast.svg" width="50"/></div>
                     <span>Jouer l'introduction</span>
                 </div>
@@ -48,6 +48,12 @@
                     </li>
                 <% } %>
                 </ul>
+                <% if(typeof app.selected_app.final !== "undefined" && app.selected_app.final.video !== ""){ %>
+                    <div class="item_button intro" data-action="cast" data-type="video" data-file="<%= app.selected_app.final.video %>" data-size="<%= app.selected_app.final.size %>" data-selectedapp="true">
+                        <div class="icon cast"><img src="img/cast.svg" width="50"/></div>
+                        <span>Jouer le générique de fin</span>
+                    </div>
+                <% } %>
             </div>
         </div>
     </div>

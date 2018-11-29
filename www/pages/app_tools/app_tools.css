@@ -6,7 +6,7 @@
 .app_tools .column{
     width: 100%;
     min-height: 100%;
-    display: inline-table;
+    display: block;
     float: left;
 }
 .app_tools .tools_list{
@@ -22,7 +22,7 @@
     border-bottom:1px solid #E3E3E3;
     cursor: pointer;
 }
-.app_tools .tools_list li:hover{
+.app_tools .tools_list li:hover{    
     background:#FFF;
     opacity: .8;
 }

@@ -16,14 +16,16 @@ var receptor = {
         }, this);
     },
     create_component : function(datas){
-        console.log(data);
-        
         switch(datas.status){
             case "init_drawing":
                 $('.module').html('');
                 $('.chronos').remove();
                 TweenMax.killAll();
-                this.init_drawing(datas);
+                app.socket.emit('njoy', {status:'stop_video'});
+                app.socket.emit('njoy', {status:'stop_audio'});
+                setTimeout($.proxy(function(){
+                    this.init_drawing(datas);
+                }, this), 300);
                 break;
             case "drawing":
                 this.drawing(datas);
