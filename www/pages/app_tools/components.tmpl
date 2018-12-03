@@ -7,6 +7,8 @@
                 <source src="<%= app.ip+"/"+(jingle.file.replace('webm', 'mp4')) %>" type="video/mp4">
             </video>
             <div class="cast_button" data-action="cast" data-type="video" data-file="<%= jingle.file %>" data-size="<%= jingle.size %>">Diffuser le Jingle</div>
+            <div class="cast_button" data-action="cast" data-type="splash" data-selectedapp="false">Afficher le splashscreen</div>
+            <!--<div class="cast_button" data-action="cast" data-type="splash" data-file="<%= jingle.file %>" data-size="<%= jingle.size %>">Afficher le splashscreen</div>-->
         </div>
     <% } %>
 <% } %>
@@ -59,7 +61,7 @@
                     });
                     }
                     </script>
-                <% } else if (_.keys(menu[i].components)[c] === "galery"){ %>
+                <% }else if (_.keys(menu[i].components)[c] === "galery"){ %>
                     <ul class="galery_list">
                         <% for(var g=0; g<comp_datas.length; g++){ %>
                             <li class="picture_gallery">
@@ -68,10 +70,12 @@
                                 <% if(_.keys(comp_datas[g].datas).length > 0){ %>
                                     <ul class="datas_list">
                                         <% for(var d=0; d<_.keys(comp_datas[g].datas).length; d++){ %>
-                                            <li>
-                                                <div class="label"><%= _.keys(comp_datas[g].datas)[d] %> : </div>
-                                                <%= comp_datas[g].datas[_.keys(comp_datas[g].datas)[d]] %>
-                                            </li>
+                                            <% if( _.keys(comp_datas[g].datas)[d] !== "background" ) { %>
+                                                <li>
+                                                    <div class="label"><%= _.keys(comp_datas[g].datas)[d] %> : </div>
+                                                    <%= comp_datas[g].datas[_.keys(comp_datas[g].datas)[d]] %>
+                                                </li>
+                                            <% } %>
                                         <% } %>
                                     </ul>
                                 <% } %>
@@ -86,9 +90,9 @@
                                     </li>
                                 </ul>
                                 <% if(typeof comp_datas[g].action !== "undefined"){ %>
-                                    <div class="cast_button" data-navigate="<%= comp_datas[g].action %>" data-type="picture" data-file="<%= comp_datas[g].file %>" data-chronos="<%= comp_datas[g].chronos %>"><%= comp_datas[g].action_label %></div>
+                                    <div class="cast_button" data-navigate="<%= comp_datas[g].action %>" data-type="picture" data-file="<%= comp_datas[g].file %>" data-chronos="<%= comp_datas[g].chronos %>" data-ambiant="<%= comp_datas[g].ambiant %>"><%= comp_datas[g].action_label %></div>
                                 <% }else{ %>
-                                    <div class="cast_button" data-action="cast" data-type="picture" data-file="<%= comp_datas[g].file %>" data-chronos="<%= comp_datas[g].chronos %>">Diffuser</div>
+                                    <div class="cast_button" data-action="cast" data-type="picture" data-file="<%= comp_datas[g].file %>" data-chronos="<%= comp_datas[g].chronos %>" data-ambiant="<%= comp_datas[g].ambiant %>">Diffuser</div>
                                 <% } %>
                                 
                             </li>
@@ -148,7 +152,7 @@
                                         </li>
                                     <% } %>
                                 </ul>
-                                <div class="cast_button" data-action="cast" data-type="object" data-menu="<%= i %>" data-component="golden_family" data-componentid="<%= q %>" data-chronos="60" data-chronostype="bottom">Diffuser</div>
+                                <div class="cast_button" data-action="cast" data-type="object" data-menu="<%= i %>" data-component="golden_family" data-componentid="<%= q %>" data-chronos="<%= comp_datas[q].datas.chrono %>" data-chronostype="bottom">Diffuser</div>
                             </li>
                         <% } %>
                     </ul>
@@ -157,8 +161,8 @@
                         <% for(var q=0; q<comp_datas.length; q++){ %>
                             <li>
                                 <span><%= comp_datas[q].label %></span>
-                                <div class="cast_button" data-action="cast" data-type="word" data-word="<%= comp_datas[q].label %>" data-menu="<%= i %>" data-component="word_component" data-componentid="<%= q %>" data-chronos="60" data-chronostype="bottom">Diffuser</div>
-                                <div class="cast_button" data-action="cast" data-type="word" data-word="<%= comp_datas[q].label %>" data-menu="<%= i %>" data-component="word_component" data-componentid="<%= q %>" data-chronos="60" data-chronostype="bottom">Relancer le chronos</div>
+                                <div class="cast_button" data-action="cast" data-type="word" data-word="<%= comp_datas[q].label %>" data-menu="<%= i %>" data-component="word_component" data-componentid="<%= q %>" data-chronos="<%= comp_datas[q].datas.chrono %>" data-chronostype="bottom">Diffuser</div>
+                                <div class="cast_button" data-action="cast" data-type="word" data-word="<%= comp_datas[q].label %>" data-menu="<%= i %>" data-component="word_component" data-componentid="<%= q %>" data-chronos="<%= comp_datas[q].datas.chrono %>" data-chronostype="bottom">Relancer le chronos</div>
                             </li>
                         <% } %>
                     </ul>

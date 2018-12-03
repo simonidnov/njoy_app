@@ -73,7 +73,7 @@ var app_tools = {
                             console.log('error loading ' + element.data('src'));
                         }
                     });
-                }, 250) );
+                }, 50) );
     		});
             $('#open_tools').on(ui.event, function(){
                 if($('#tools_scroll').position().top !== 0){
