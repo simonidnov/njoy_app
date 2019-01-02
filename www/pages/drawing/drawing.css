@@ -10,14 +10,14 @@
 }
 .pencil_menu{
     position: absolute;
-    bottom:-50px;
+    top:-50px;
     left: 0;
     height:50px;
     display: inline-flex;
     display: none;
 }
 .pencil_menu.opened{
-    bottom: 0px;
+    top: 0px;
     display: inline-flex;
     width: 100%;
     background:#FFF
@@ -79,10 +79,9 @@
 
 .open_close_pencil_menu{
     position:absolute;
-    left:0;
     right:0;
     width:50px;
     height:50px;
     margin:auto;
-    bottom:0;
+    top:0;
 }

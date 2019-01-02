@@ -31,6 +31,7 @@ var drawing = {
 }
 var drawer = function (canvas_id) {
     this.canvas = document.getElementById(canvas_id);
+    this.canvas.style.backgroundColor = "#FFFFFF";
     // TODO REMOVE TEST SIZE
     /*
     this.canvas.width = window.innerWidth;

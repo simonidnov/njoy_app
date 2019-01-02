@@ -1,0 +1,106 @@
+.forbans{
+    width:100%;
+    position: relative;
+    display: block;
+    display: inline-flex;
+}
+.forbans .flipflap{
+    background:#000;
+    padding-top:5px;
+    padding-bottom:5px;
+    color:#FFF;
+    font-size: 24px;
+    display: inline;
+    text-align:center;
+    margin:2px;
+    width:24px;
+    transform-style: preserve-3d;
+    position: relative;
+    height:30px;
+    overflow: hidden;
+    border-radius: 4px;
+    line-height: 22px;
+}
+.forbans .flipflap:before{
+    content:"";
+    position: absolute;
+    left:0;
+    top:15px;
+    height:1px;
+    background-color:#333;
+    margin:auto;
+    width:100%;
+}
+.forbans .flipflap .flip,
+.forbans .flipflap .flap{
+    position: absolute;
+    width:100%;
+    height:100%;
+    transform: rotateX(0deg);
+    transition: 0.6s;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    left: 0;
+    top:0;
+    right:0;
+    bottom:0;
+    margin:auto;
+    transform-origin: 12px 15px;
+}
+.forbans .flipflap .flap{
+    transform: rotateX(180deg);
+}
+
+.forbans .flipflap.turn .flip{
+    transform: rotateX(180deg);
+}
+.forbans .flipflap.turn .flap{
+    transform: rotateX(0deg);
+}
+
+
+
+.motionTest{
+    width:100px;
+    height:100px;
+    position: relative;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    margin:auto;
+    transform-style: preserve-3d;
+    perspective: 400px;
+    perspective-origin: 50px 50px;
+    float: left;
+}
+.motionTest .front,
+.motionTest .back{
+    position: absolute;
+    transform-origin: 50px 50px;
+    width:100%;
+    height:100%;
+    backface-visibility: hidden;
+    transform: rotateX(0deg) perspective(400px);
+    font-size: 80px;
+    background:#F0F0F0;
+    transform-style: preserve-3d;
+    perspective: 400px;
+    perspective-origin: 50px 50px;
+}
+.motionTest .front{
+    -webkit-animation: ROTATEFRONT 1s infinite;
+}
+.motionTest .back{
+    transform: rotateX(180deg);
+    -webkit-animation: ROTATEBACK 1s infinite;
+}
+
+@-webkit-keyframes ROTATEFRONT {
+    0%   { transform: rotateX(0deg) perspective(400px); }
+    100% { transform: rotateX(180deg) perspective(400px); }
+}
+@-webkit-keyframes ROTATEBACK {
+    0%   { transform: rotateX(180deg) perspective(400px); }
+    100% { transform: rotateX(0deg) perspective(400px); }
+}

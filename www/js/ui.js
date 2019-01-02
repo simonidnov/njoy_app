@@ -43,16 +43,16 @@ var ui = {
             this.setListeners();
         }, this), 200);
     },
-    test_popin : function(){
+    test_popin : function() {
         ui.popin({
-                "illus":"url",
-                "title":"test",
-                "message":"message test",
-                "buttons":[
-                    {"label":"button 1"},
-                    {"label":"button 2"}
-                ]
-            }, function(e){console.log(e);});
+            "illus":"url",
+            "title":"test",
+            "message":"message test",
+            "buttons":[
+                {"label":"button 1"},
+                {"label":"button 2"}
+            ]
+        }, function(e){console.log(e);});
     },
     popin : function(params, callback){
         if($('#popin_ui_content').length > 0){
@@ -70,14 +70,14 @@ var ui = {
         $('#close_popin').on(ui.event, function(){ui.close_popin();});
         setTimeout(function(){ui.close_popin();}, 2000);
     },
-    close_popin:function(e){
+    close_popin:function(e) {
         TweenMax.to($('#popin_ui_content .popin'), .5, {top:"100%", opacity:0, ease:Back.easeIn});
         TweenMax.to($('#popin_ui_content'), .5, {opacity:0, delay:.5, onComplete:function(){
             $('#popin_ui_content').remove();
         }});
         ui.popin_callBack(e);
     },
-    openTeam : function(){
+    openTeam : function() {
       $('.teams').addClass('opened');
       $('.teams .cross_button').off('click').on('click', $.proxy(function(){
         this.closeTeam();
@@ -176,6 +176,9 @@ var ui = {
             if(typeof $(this).attr('data-direction') !== "undefined"){
                 ui.direction = $(this).attr('data-direction');
             }
+            if($(this).attr('data-ambiant') !== ""){
+                app.socket.emit("njoy", {status:"audio", file:$(this).attr('data-ambiant'), data:"", tools:app.selected_tool});
+            }
             ui.navigate($(this).attr('data-navigate'));
             event.preventDefault();
             return false;
@@ -183,7 +186,6 @@ var ui = {
         $('[data-action]').off(ui.event).on(ui.event, function(){
             switch($(this).attr('data-action')){
                 case 'drawing':
-                    console.log('EMIT ::::::::: status ', status);
                     app.socket.emit("njoy", {status:"drawer"});
                     break;
                 case 'cast':
@@ -224,13 +226,11 @@ var ui = {
                             $(this).find('img').attr('src', "img/pause_icon.svg");
                         }
                     }
-                    if(typeof $(this).attr('data-selectedapp') !== "undefined"){
-                        //delete app.selected_tool;
+                    if(typeof $(this).attr('data-selectedapp') !== "undefined" && $(this).attr('data-selectedapp') === "true") {
                         status['tools'] = app.selected_app;
-                    }else{
+                    } else {
                         status['tools'] = app.selected_tool;    
                     }
-                    console.log('EMIT ::::::::: status ', status);
                     app.socket.emit("njoy", status);
                     /*switch($(this).attr('data-type')){
                         case 'video':
@@ -289,7 +289,7 @@ var ui = {
         app.socket_callback = function(e) {
             //console.log(e);
         }
-        if(url.indexOf('logout') !== -1){
+        if(url.indexOf('logout') !== -1) {
             ui.popin({
                 "illus":"img/logout_illus.svg",
                 "title":"Déconnexion",
@@ -330,7 +330,7 @@ var ui = {
                 /* TODO create transitions */
                 //$('body main.app').html('');
                 $('body main.app').append(ui.templates[ui.page_params.page](ui.descriptor.content.datas));
-                $('body main.app .screen').last().css('left', '100%');
+                $('body main.app .screen').last().css('transform', 'translate3d('+window.outerWidth+'px, 0, 0)');
                 /* load css dependencies */
                 for (var c = 0; c < ui.descriptor.dependencies.css.length; c++) {
                     if ($('link[href="pages/' + ui.page_params.page + '/' + ui.descriptor.dependencies.css[c] + '"]').length === 0) {
@@ -357,27 +357,35 @@ var ui = {
                     }
                     if ($('body main.app .screen').length > 1) {
                         if(ui.direction === "back"){
-                            TweenMax.to($('body main.app .screen').first(), .5, {
-                                left: '100%'
+                            TweenLite.to($('body main.app .screen').first(), .5, {
+                                x: window.outerWidth,
+                                delay:.1,
+                                ease:Power4.easeInOut
                             });
-                            TweenMax.set($('body main.app .screen').last(), {left:"-100%"});
+                            TweenLite.set($('body main.app .screen').last(), {
+                                x:-window.outerWidth
+                            });
                         }else{
-                            TweenMax.to($('body main.app .screen').first(), .5, {
-                                left: '-100%'
+                            TweenLite.to($('body main.app .screen').first(), .5, {
+                                x: -window.outerWidth,
+                                delay:.1,
+                                ease:Power4.easeInOut
                             });
                         }
-                        TweenMax.to($('body main.app .screen').last(), .5, {
-                            left: '0%',
+                        TweenLite.to($('body main.app .screen').last(), .5, {
+                            x: 0,
+                            delay:.1,
+                            ease:Power4.easeInOut,
                             onComplete: function() {
                                 window[ui.descriptor.class].init();
                                 $('body main.app .screen').first().remove();
-                                ui.init_scroll_view();
                                 $('.blocker').remove();
+                                ui.init_scroll_view();
                             }
                         });
                         ui.direction = "";
                     } else {
-                        $('body main.app .screen').last().css('left', '0%');
+                        $('body main.app .screen').last().css('transform', 'translate3d(0px, 0, 0)');
                         window[ui.descriptor.class].init();
                         $('.blocker').remove();
                         ui.init_scroll_view();
@@ -492,7 +500,6 @@ var ui = {
     },
     open_wifi_settings : function(){
         if (window.cordova && window.cordova.plugins.settings) {
-            console.log('openNativeSettingsTest is active');
             window.cordova.plugins.settings.open(
                 "wifi",
                 function() {
