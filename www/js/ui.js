@@ -178,7 +178,7 @@ var ui = {
             if(typeof $(this).attr('data-direction') !== "undefined"){
                 ui.direction = $(this).attr('data-direction');
             }
-            if($(this).attr('data-ambiant') !== ""){
+            if(typeof $(this).attr('data-ambiant') !== "undefined" && $(this).attr('data-ambiant') !== ""){
                 app.socket.emit("njoy", {status:"audio", file:$(this).attr('data-ambiant'), data:"", tools:app.selected_tool});
             }
             ui.navigate($(this).attr('data-navigate'));
