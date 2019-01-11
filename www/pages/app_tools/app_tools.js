@@ -21,9 +21,7 @@ var app_tools = {
             });
             */
             var self = this;
-            console.log('----------------------------------------- APP TOOLS');
             if(typeof app.selected_app.redirect !== "undefined"){
-                console.log('app.selected_app.redirect ', app.selected_app.redirect);
                 if(typeof app.selected_app.redirect !== "undefined"){
                     app.socket.emit('redirect', {url:app.selected_app.redirect});
                 }else{
@@ -33,7 +31,6 @@ var app_tools = {
             $('#connexion_check').off('click').on('click', function(){
                 ui.open_wifi_settings();
             });
-            console.log(app.selected_app);
             $.get('pages/app_tools/components.tmpl', $.proxy(function(e) {
                 this.component_template = _.template(e);
             }, this));
@@ -62,10 +59,13 @@ var app_tools = {
                     TweenMax.to($('#tools_scroll'), .5, {top:"100%", ease:Power4.easeIn});
                 }
             });
-            if(typeof app.selected_app.tools.length === 'undefined' || app.selected_app.tools.length === 0){
-                $('.app_tools').addClass('notools');
-            }
+            
         }, this), 500);
+        
+        if(typeof app.selected_app.tools.length === 'undefined' || app.selected_app.tools.length === 0){
+            $('.app_tools').addClass('notools');
+        }
+
         $(document).on('resize', function(){
             app_tools.resize();
         });
@@ -103,10 +103,6 @@ var app_tools = {
         // SI ON A UNE CLASS JAVASCRIPT SPECIFIQUE ON LA CHARGE ICI 
         if(typeof app.selected_tool.javascripts !== "undefined"){
             for(var j=0; j<app.selected_tool.javascripts.length; j++){
-                console.log(app.selected_tool.javascripts[j]);
-
-                console.log("ALREADY LOADED ? ", $('script[src="'+app.selected_tool.javascripts[j]+'"]').length);
-
                 if($('script[src="'+app.selected_tool.javascripts[j]+'"]').length === 0){
                     var scriptElement = document.createElement('script');
                     scriptElement.src = app.selected_tool.javascripts[j];
@@ -154,14 +150,6 @@ var app_tools = {
                 delay:.5
             });
         }
-        /*
-        $('[data-component="golden_family"]').on('click', function(){
-            console.log('is golden family');
-        });
-        $('[data-type="response"]').on('click', function(){
-            console.log('intercept hitted area');
-        });
-        */
     },
     destroy: function() {
         console.log('destroy app_tools');
