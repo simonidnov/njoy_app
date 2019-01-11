@@ -309,3 +309,230 @@ var drawer = function(canvas_id, width, height){
   /* TODO : on receive ticker from user update stage */
   //createjs.Ticker.addEventListener("tick", $.proxy(function(){this.update();},this));
 }
+
+
+
+/* 
+repli quiz SAVE JSON
+{
+          "label":"Repli Quiz",
+          "desc":"Deux équipes de 5 enfants s’affrontent, plus un animateur. Un buzzer, une liste de questions, le premier à buzzer peut donner la réponse.",
+          "background":"ressources/crazyshow/jingles/repliquiz.svg",
+          "tr":"ressources/crazyshow/habillage/logo_crazyshow_TR.svg",
+          "tl":"",
+          "tc":"ressources/crazyshow/habillage/repliquiz.svg",
+          "br":"",
+          "bl":"",
+          "bc":"",
+          "datas":{},
+          "jingle":{"file":"ressources/crazyshow/jingles/repliquiz.mp4", "type":"video", "event":null, "params":null},
+          "menu":[
+            {
+              "label":"4-6 ans",
+              "desc":"Des questions pour les plus jeunes de 4 à 6 ans",
+              "components":{
+                "repli_quiz":[
+                    {
+                        "label":"",
+                        "desc":"Quel objet utilise-t-on pour prendre la température ?",
+                        "datas":{
+                            "chrono":60,
+                            "display":"screen",
+                            "display_response":"regis",
+                            "type":"repli_quiz"
+                        },
+                        "choices":[
+                          "Thermomètre"
+                        ],
+                        "response":"all"
+                    },
+                    {
+                        "label":"",
+                        "desc":"Quel animal donne du lait ?",
+                        "datas":{
+                            "chrono":60,
+                            "display":"screen",
+                            "display_response":"regis",
+                            "type":"repli_quiz"
+                        },
+                        "choices":["La vache"],
+                        "response":"all"
+                    },
+                    {
+                        "label":"",
+                        "desc":"En voiture, à quel couleur de feu dois-je m’arrêter ?",
+                        "datas":{
+                            "chrono":60,
+                            "display":"screen",
+                            "display_response":"regis",
+                            "type":"repli_quiz"
+                        },
+                        "choices":["Rouge"],
+                        "response":"all"
+                    },
+                    {
+                        "label":"",
+                        "desc":"Quelle est la capitale de la France ?",
+                        "datas":{
+                            "chrono":60,
+                            "display":"screen",
+                            "display_response":"regis",
+                            "type":"repli_quiz"
+                        },
+                        "choices":["Paris"],
+                        "response":"all"
+                    }
+                ]
+              }
+            },
+            {
+              "label":"6-12 ans",
+              "desc":"Des questions pour les 6 à 12 ans",
+              "components":{
+                "quiz_component":[
+                    {
+                        "label":"",
+                        "desc":"Citez trois métiers où l’on doit porter un casque",
+                        "datas":{
+                            "chrono":60,
+                            "display":"screen",
+                            "display_response":"regis",
+                            "type":"quiz_component"
+                        },
+                        "choices":["", "", ""],
+                        "response":"all"
+                    },
+                    {
+                        "label":"",
+                        "desc":"Je suis un sorcier très célèbre avec des lunettes. Qui suis-je ?",
+                        "datas":{
+                            "chrono":60,
+                            "display":"screen",
+                            "display_response":"regis",
+                            "type":"quiz_component"
+                        },
+                        "choices":["Harry Potter"],
+                        "response":"all"
+                    },
+                    {
+                        "label":"",
+                        "desc":"Dans quel pays trouve-ton des sumos ?",
+                        "datas":{
+                            "chrono":60,
+                            "display":"screen",
+                            "display_response":"regis",
+                            "type":"quiz_component"
+                        },
+                        "choices":["Au Japon"],
+                        "response":"all"
+                    },
+                    {
+                        "label":"",
+                        "desc":"Quel festival trouve-ton chaque année à Cannes ?",
+                        "datas":{
+                            "chrono":60,
+                            "display":"screen",
+                            "display_response":"regis",
+                            "type":"quiz_component"
+                        },
+                        "choices":["Festival du cinéma"],
+                        "response":"all"
+                    },
+                    {
+                        "label":"",
+                        "desc":"Combien y’a-t-il de jours dans une année ?",
+                        "datas":{
+                            "chrono":60,
+                            "display":"screen",
+                            "display_response":"regis",
+                            "type":"quiz_component"
+                        },
+                        "choices":["365"],
+                        "response":"all"
+                    },
+                    {
+                        "label":"",
+                        "desc":"Quel animal construit des barrages sur les rivières ?",
+                        "datas":{
+                            "chrono":60,
+                            "display":"screen",
+                            "display_response":"regis",
+                            "type":"quiz_component"
+                        },
+                        "choices":["Le castor"],
+                        "response":"all"
+                    },
+                    {
+                        "label":"",
+                        "desc":"Dans quoi vivent les indiens ?",
+                        "datas":{
+                            "chrono":60,
+                            "display":"screen",
+                            "display_response":"regis",
+                            "type":"quiz_component"
+                        },
+                        "choices":["Des tipis"],
+                        "response":"all"
+                    }
+                ]
+              }
+            },
+            {
+              "label":"12 ans et +",
+              "desc":"Des questions pour les enfants de 12 ans et plus",
+              "components":{
+                "quiz_component":[
+                    {
+                        "label":"",
+                        "desc":"Comment appelle-ton la peur des araignées ?",
+                        "datas":{
+                            "chrono":60,
+                            "display":"screen",
+                            "display_response":"regis",
+                            "type":"quiz_component"
+                        },
+                        "choices":["L’arachnophobie"],
+                        "response":"all"
+                    },
+                    {
+                        "label":"",
+                        "desc":"Qui était surnommé « Le Roi Soleil » ?",
+                        "datas":{
+                            "chrono":60,
+                            "display":"screen",
+                            "display_response":"regis",
+                            "type":"quiz_component"
+                        },
+                        "choices":["Louis XIV"],
+                        "response":"all"
+                    },
+                    {
+                        "label":"",
+                        "desc":"Comment s’appelle l’écriture utilisée par les personnages aveugles ?",
+                        "datas":{
+                            "chrono":60,
+                            "display":"screen",
+                            "display_response":"regis",
+                            "type":"quiz_component"
+                        },
+                        "choices":["Le braille"],
+                        "response":"all"
+                    },
+                    {
+                        "label":"",
+                        "desc":"Quelle est la capitale des États-Unis ?",
+                        "datas":{
+                            "chrono":60,
+                            "display":"screen",
+                            "display_response":"regis",
+                            "type":"quiz_component"
+                        },
+                        "choices":["Washington"],
+                        "response":"all"
+                    }
+                ]
+              }
+            }
+          ]
+        },
+*/

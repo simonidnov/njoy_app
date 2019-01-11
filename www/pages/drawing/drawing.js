@@ -31,7 +31,6 @@ var drawing = {
 }
 var drawer = function (canvas_id) {
     this.canvas = document.getElementById(canvas_id);
-    this.canvas.style.backgroundColor = "#FFFFFF";
     // TODO REMOVE TEST SIZE
     /*
     this.canvas.width = window.innerWidth;
@@ -91,7 +90,7 @@ var drawer = function (canvas_id) {
     };
     this.isMouseDown = false;
     this.currentShape = [];
-    createjs.Ticker.setFPS(60);
+    createjs.Ticker.setFPS(24);
     createjs.Ticker.addEventListener("tick", $.proxy(function () {
         this.update();
     }, this));

@@ -6,7 +6,11 @@ var default_class = {
         if (typeof app.infos.user_name !== "undefined" && typeof app.infos.uuid !== "undefined" && app.infos.user_name !== "" && app.infos.uuid !== "") {
             app.socket.emit('njoy', {status : "disconnect", user_name: app.infos.user_name, uuid: app.infos.uuid});
         }
-        $('#ip_config').val("http://10.3.141.1:3000");
+        if(window.location.href.indexOf('localhost') === -1){
+            $('#ip_config').val("http://10.3.141.1:3000");
+        }else{
+            $('#ip_config').val(window.location.href);
+        }
         $('#connect_button').off(ui.event).on(ui.event, function () {
             app.ip = $('#ip_config').val();
             app.init_socket(function (e) {

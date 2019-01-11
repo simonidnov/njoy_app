@@ -1,0 +1,8 @@
+<div class="header-navbar">
+    <ul>
+    <% for(var i=0; i<tab_bar.length; i++){ %>
+      <li data-tab="<%= tab_bar[i].link %>" class="<% if(i===0){ %>selected<% } %>"><%= tab_bar[i].label %></li>
+    <% } %>
+    <div class="select_bar"></div>
+    </ul>
+</div>

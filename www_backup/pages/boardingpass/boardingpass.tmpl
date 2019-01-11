@@ -1,0 +1,52 @@
+<div class="boardingpass">
+    <link rel="stylesheet" type="text/css" href="pages/boardingpass/css/boardingpass.css">
+    <% if(questions.length > 0){ %>
+        <h3>Liste des destinations en cours</h3>
+        <ul class="destinations">
+            <% for(var q=0; q<questions.length; q++) { %>
+                <li class="questions" data-id="<%= questions[q].id %>" data-line="<%= q %>">
+                    <div class="line">
+                        <div class="ID">
+                            <%= str_pad_left(parseInt(questions[q].id), 0, 3) %>
+                        </div>
+                        <div class="infos">
+                            <div class="question"><%= questions[q].question %></div>
+                            <div class="answer"><span>réponse : </span><%= questions[q].answer %></div>
+                        </div>
+                        <ul class="actions">
+                            <li data-bpaction="refresh" data-id="<%= questions[q].id %>" data-line="<%= q %>">
+                                <img src="/pages/boardingpass/images/SVG/refresh.svg" />
+                            </li>
+                            <li data-bpaction="validate" data-id="<%= questions[q].id %>" data-line="<%= q %>">
+                                <img src="/pages/boardingpass/images/SVG/validate.svg"/>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            <% } %>
+        </ul>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+    <% }else { %>
+        <h3>Settings</h3>
+        <div class="settingsForm">
+            <ul class="task_list">
+                <li id="linechronocheck">Activer le temps par question<div class="radio_ui" data-checked="false" id="activechronoline"></div></li>
+            </ul>
+            <div class="line" id="linechrono" style="display:none;">
+                <label for="chronotime">Durée d'une question MM:ss: </label>
+                <input name="chronotime" id="chronoline" type="time" value="10:00" max="60:00" min="05:00"/>
+            </div>
+            <ul class="task_list">
+                <li id="globalchronocheck">Activer un chrono global<div class="radio_ui" data-checked="true" id="activechronoline"></div></li>
+            </ul>
+            <div class="line" id="globalchrono" style="display:none;">
+                <label for="chronotime">Durée de l'animation HH:mm: </label>
+                <input name="chronotime" id="chronotime" type="time" value="03:00"/>
+            </div>
+            <button class="classic_button" data-bpaction="start">Lancer l'animation</button>
+        </div>
+    <% } %>
+</div>
