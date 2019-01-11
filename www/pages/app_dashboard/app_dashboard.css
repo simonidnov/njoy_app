@@ -68,6 +68,8 @@
     box-sizing: border-box;
     position: relative;
     display: inline-flex;
+    padding-top:20px;
+    padding-bottom:20px;
 }
 
 .task_list li .radio_ui{
