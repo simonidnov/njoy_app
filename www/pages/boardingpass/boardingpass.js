@@ -43,17 +43,20 @@ boardingpass.init = function(){
         this.reset_template();
     }, this));
     // ON RESET LE SOCKET CALLBACK GLOBAL ET ON CATCH LES EVENEMENTS
-    app.socket_callback = function(e) {
-        //console.log("socket callback boardingpass :::: ", e);
+    console.log('ON RESET LE SOCKEYT CALL BACK DE L\'APP BOARDINGPASS');
+    app.socket_callback = $.proxy(function(e) {
+        console.log("socket callback boardingpass :::: ", e);
         switch(e.status){
             case 'getQuestions':
+                console.log('GET QUESTIONS CALLED ? ');
                 // ON NE FAIT RIEN DE CE COTÉ, LORSQUE LE CALL EST ENVOYÉ ON ATTEND UN SENDQUESTION DEPUIS LE RECEPTOR
                 return false;
                 break;
             case 'sendQuestions':
                 // SEND QUESTION EST ENVOYÉ DEPUIS LE RECEPTOR, LORSQU'ON LE RECOIS ON MET À JOUR TOUT LE TEMPLATE
-                this.questions = e.questions;
-                this.reset_template();
+                console.log('REQUESTED QUESTIONS ', e.questions);
+                boardingpass.questions = e.questions;
+                boardingpass.reset_template();
                 break;
             case 'refreshLine':
                 // ICI ON NE FAIT RIEN, ON ATTEND QUE LE RECEPTOR ENVOIE UN EVENEMENT SEND LINE
@@ -63,11 +66,11 @@ boardingpass.init = function(){
                 break;
             case 'sendLine':
                 // Lorsqu'on reçois une nouvelle ligne, on met à jour la ligne dans le template :
-                this.update_line();
+                boardingpass.update_line();
                 break;
             case 'questionRefreshed':
                 //console.log(e.id, e.question);
-                this.questions[e.id] = e.question;
+                boardingpass.questions[e.id] = e.question;
                 var element = $('.destinations li[data-line="'+e.id+'"]').eq(0);
                 element[0].setAttribute('data-id', e.question.id);
                 element.find('.ID').html(e.question.id);
@@ -78,7 +81,7 @@ boardingpass.init = function(){
                 //element.find('[data-line]').setAttribute(e.id);
                 break;
         }
-    }.bind(this);
+    }.bind(this));
     // PAR DEFAUT ON DEMANDE LES QUESTIONS DU NIVEAU ZERO (OU CO-PILOTE) AU RECEPTOR
     // app.socket.emit('boardingpass', {"status":"getQuestions", "level":this.level});
     this.questions = [];

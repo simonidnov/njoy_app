@@ -290,6 +290,7 @@ var ui = {
             app.selected_app = app.activities.activities[url.split('/')[1]];
         }*/
         app.socket_callback = null;
+        console.log('socket_callback UI');
         app.socket_callback = function(e) {
             //console.log(e);
         }

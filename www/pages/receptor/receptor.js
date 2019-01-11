@@ -9,6 +9,7 @@ var receptor = {
     init:function(){
         app.init(function(){});
         /* on receive node_log print */
+        console.log('socket_callback RECEPTOR');
         app.socket_callback = $.proxy(function(e){
             if(typeof e.datas !== "undefined"){
                 this.create_component(e.datas);
