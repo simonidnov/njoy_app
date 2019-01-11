@@ -52,7 +52,7 @@ var app_tools = {
                         }
                     });
                 }, 50) );
-    		});
+            });
             $('#open_tools').on(ui.event, function(){
                 if($('#tools_scroll').position().top !== 0){
                     $('header .left_nav .head_button').css('display', 'none');
@@ -62,12 +62,14 @@ var app_tools = {
                     TweenMax.to($('#tools_scroll'), .5, {top:"100%", ease:Power4.easeIn});
                 }
             });
+            if(typeof app.selected_app.tools.length === 'undefined' || app.selected_app.tools.length === 0){
+                $('.app_tools').addClass('notools');
+            }
         }, this), 500);
         $(document).on('resize', function(){
             app_tools.resize();
         });
         app_tools.resize();
-        
     },
     resize : function(){
         if(window.innerWidth <= 568){
@@ -87,7 +89,6 @@ var app_tools = {
             if(typeof app_tools.tab_callback !== "undefined"){
                 app_tools.tab_callback(app_tools.tab_bar);   
             }
-            //app_tools.components_scroll.refresh();
         });
     },
     setAppId : function(appid){
