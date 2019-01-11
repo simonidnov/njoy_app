@@ -3,15 +3,16 @@
 }
 .picture{
     width:100%;
-    background-size: cover;
+    background-size: contain;
     background-position: center center;
     position: relative;
     background-color: #E3E3E3;
     display:table;
-    height:50vh;
+    height:30vh;
+    background-repeat: no-repeat;
 }
 .picture img{
-    max-height: 50vh;
+    max-height: 30vh;
 }
 .cast_button_top{
     position: absolute;
@@ -66,4 +67,13 @@
     line-height: 50px;
     box-sizing: border-box;
     position: relative;
+    display: inline-flex;
+}
+
+.task_list li .radio_ui{
+}
+.task_list li .label{
+    max-width: 80%;
+    line-height: 20px;
+    float: left;
 }

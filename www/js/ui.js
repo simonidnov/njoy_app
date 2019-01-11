@@ -41,7 +41,7 @@ var ui = {
             $('body').append(this.templates.footer({}));
             this.navigate(this.page_params.page);
             this.setListeners();
-        }, this), 200);
+        }, this), 500);
     },
     test_popin : function(){
         ui.popin({
@@ -67,8 +67,10 @@ var ui = {
         $('[data-popbutton]').on(ui.event, function(e){
            ui.close_popin($(this).attr('data-popbutton'));
         });
-        $('#close_popin').on(ui.event, function(){ui.close_popin();});
-        setTimeout(function(){ui.close_popin();}, 2000);
+        $('#close_popin').on(ui.event, function(){
+            ui.close_popin();
+        });
+        //setTimeout(function(){ui.close_popin();}, 2000);
     },
     close_popin:function(e){
         TweenMax.to($('#popin_ui_content .popin'), .5, {top:"100%", opacity:0, ease:Back.easeIn});
@@ -176,6 +178,9 @@ var ui = {
             if(typeof $(this).attr('data-direction') !== "undefined"){
                 ui.direction = $(this).attr('data-direction');
             }
+            if($(this).attr('data-ambiant') !== ""){
+                app.socket.emit("njoy", {status:"audio", file:$(this).attr('data-ambiant'), data:"", tools:app.selected_tool});
+            }
             ui.navigate($(this).attr('data-navigate'));
             event.preventDefault();
             return false;
@@ -183,21 +188,20 @@ var ui = {
         $('[data-action]').off(ui.event).on(ui.event, function(){
             switch($(this).attr('data-action')){
                 case 'drawing':
-                    console.log('EMIT ::::::::: status ', status);
                     app.socket.emit("njoy", {status:"drawer"});
                     break;
                 case 'cast':
                     var status = {};
-                    if(typeof $(this).attr('data-type') !== "undefined"){
+                    if(typeof $(this).attr('data-type') !== "undefined") {
                         status['status'] = $(this).attr('data-type');
                     }
-                    if(typeof $(this).attr('data-file') !== "undefined"){
+                    if(typeof $(this).attr('data-file') !== "undefined") {
                         status['file'] = $(this).attr('data-file');
                     }
-                    if(typeof $(this).attr('data-size') !== "undefined"){
+                    if(typeof $(this).attr('data-size') !== "undefined") {
                         status['size'] = $(this).attr('data-size');
                     }
-                    if(typeof $(this).attr('data-menu') !== "undefined"){
+                    if(typeof $(this).attr('data-menu') !== "undefined") {
                         status['menu'] = $(this).attr('data-menu');
                     }
                     if(typeof $(this).attr('data-component') !== "undefined"){
@@ -224,13 +228,13 @@ var ui = {
                             $(this).find('img').attr('src', "img/pause_icon.svg");
                         }
                     }
-                    if(typeof $(this).attr('data-selectedapp') !== "undefined"){
+                    if(typeof $(this).attr('data-selectedapp') !== "undefined" && $(this).attr('data-selectedapp') === "true") {
                         //delete app.selected_tool;
                         status['tools'] = app.selected_app;
                     }else{
                         status['tools'] = app.selected_tool;    
                     }
-                    console.log('EMIT ::::::::: status ', status);
+                    //console.log('EMIT ::::::::: status ', status);
                     app.socket.emit("njoy", status);
                     /*switch($(this).attr('data-type')){
                         case 'video':
@@ -286,6 +290,7 @@ var ui = {
             app.selected_app = app.activities.activities[url.split('/')[1]];
         }*/
         app.socket_callback = null;
+        console.log('socket_callback UI');
         app.socket_callback = function(e) {
             //console.log(e);
         }
@@ -477,18 +482,17 @@ var ui = {
     init_scroll_view: function() {
         $('.screen').css({'height':window.innerHeight-$('header').height(), "overflow":"hidden"});
         $('.screen .wrapper').css({'height':"100%", 'width':"100%", "overflow":"hidden"});
-        $('.screen .wrapper .scroller').css({'display':"table", "width":"100%"});
-        if($('.screen .wrapper .scroller').length === 1){
+        $('.screen .wrapper .scroller').css({'display':"block", "width":"100%"});
+        /*if($('.screen .wrapper .scroller').length === 1){
             if(typeof IScroll !== "undefined"){
-                /*
+                
                 ui.page_scroll = new IScroll('#screen_wrapper',{
                     mouseWheel:true,
                     click: true,
                     useTransition: true
                 });
-                */
             }
-        }
+        }*/
     },
     open_wifi_settings : function(){
         if (window.cordova && window.cordova.plugins.settings) {
@@ -506,17 +510,20 @@ var ui = {
             console.log('openNativeSettingsTest is not active!');
         }
     },
-    check_wifi : function(){
-        if(typeof navigator.connection !== "undefined"){
-            if(navigator.connection.type !== "wifi"){
+    check_wifi : function() {
+        if(typeof navigator.connection !== "undefined") {
+            if(navigator.connection.type !== "wifi") {
                 ui.popin({
                     "illus":"img/logout_illus.svg",
                     "title":"WIFI",
                     "message":"Pour utiliser l'application vous devez activer la WIFI et vous connecter sur le réseau NJOY avec le mot de passe njoynjoy.",
                     "buttons":[
-                        {"label":"Activer la WIFI", class:"error"}
+                        {
+                            "label": "Activer la WIFI", 
+                            "class": "error"
+                        }
                     ]
-                }, function(e){
+                }, function(e) {
                     ui.open_wifi_settings();
                 });
             }

@@ -67,14 +67,17 @@ section.section_tab p{
     padding:10px;
 }
 .app_description{
-    font-size: 17px !important;
-    line-height: 30px !important;
-    margin:0 !important;
-    padding:0 !important;
-    width:100% !important;
-    max-width:100% !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
     padding-bottom: 10px !important;
-    border-bottom:1px solid #E3E3E3;
+    border-bottom: 1px solid #E3E3E3;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    font-weight: lighter;
 }
 video{
     width:100%;
@@ -130,7 +133,7 @@ video{
     left:0;
     right:0;
     margin:auto;
-    max-width: 100vw;
+    max-width: 100%;
     height: 48px;
     overflow: hidden;
     position: relative;
@@ -139,13 +142,13 @@ video{
     overflow-scrolling:touch;
 }
 .tab_bar ul{
-    margin:0;
-    padding:0;
-    position: absolute;
-    display: inline-flex;
+    list-style:none;
+    white-space: nowrap;
     left:0;
     right:0;
-    margin:auto;
+    margin:0;
+    padding:0;
+    display: inline-table;
 }
 .tab_bar ul li{
     margin:0;
@@ -155,12 +158,11 @@ video{
     line-height: 48px;
     text-align: center;
     color:#333;
-    display: table;
+    display: inline-block;
     height:48px;
     overflow: hidden;
     cursor: pointer;
     border-right: 1px solid #E3E3E3;
-    float:left
 }
 .tab_bar ul li:hover{
     background: #FFF;

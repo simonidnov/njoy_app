@@ -10,7 +10,7 @@
             <div class="label_separator">Prérecquis</div>
             <ul class="task_list">
                 <% for(var i=0; i<app.selected_app.prerecquise.length; i++ ){ %>
-                    <li><%= app.selected_app.prerecquise[i].label %><div class="radio_ui" data-checked="<%= app.selected_app.prerecquise[i].checked %>"></div></li>
+                    <li><div class="label"><%= app.selected_app.prerecquise[i].label %></div><div class="radio_ui" data-checked="<%= app.selected_app.prerecquise[i].checked %>"></div></li>
                 <% } %>
             </ul>
             <button id="launch_app" class="classic_button disabled">Lancer l'animation</button>

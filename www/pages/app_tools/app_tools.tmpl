@@ -35,10 +35,13 @@
                     <div class="icon cast"><img src="img/cast.svg" width="50"/></div>
                     <span>Jouer l'introduction</span>
                 </div>
-                <div class="item_button intro" data-action="cast" data-type="splash" data-selectedapp="true">
-                    <div class="icon cast"><img src="img/cast.svg" width="50"/></div>
-                    <span>Afficher le splashscreen</span>
-                </div>
+                <% if(typeof app.selected_app.introduction.pix !== "undefined") { %>
+                    <div class="item_button intro" data-action="cast" data-type="splash" data-selectedapp="true">
+                        <div class="icon cast"><img src="img/cast.svg" width="50"/></div>
+                        <span>Afficher le fond d'écran</span>
+                    </div>
+                <% } %>
+                
                 <h3>Applications</h3>
                 <ul class="tools_list">
                 <% for(var i=0; i<app.selected_app.apps.length; i++){ %>

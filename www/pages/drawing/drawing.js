@@ -90,7 +90,7 @@ var drawer = function (canvas_id) {
     };
     this.isMouseDown = false;
     this.currentShape = [];
-    createjs.Ticker.setFPS(60);
+    createjs.Ticker.setFPS(24);
     createjs.Ticker.addEventListener("tick", $.proxy(function () {
         this.update();
     }, this));

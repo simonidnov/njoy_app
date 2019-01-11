@@ -507,14 +507,18 @@ header .head_button .icon{
 
 
 
-
-
-
 /* ----- SEEKED INPUT ------ */
 input[type=range].seeker {
   -webkit-appearance: none;
   width: 100%;
   margin: 0px 0;
+}
+input[type=range].seeker:before {
+  width:200px;
+  height:100%;
+  position: absolute;
+  left:-200px;
+  top:0;
 }
 input[type=range].seeker:focus {
   outline: none;

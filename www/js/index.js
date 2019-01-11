@@ -38,7 +38,6 @@ var app = {
             this.onDeviceReady();
         }else{
             document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
-            
         }
     },
     onDeviceReady: function() {
@@ -48,12 +47,6 @@ var app = {
         ui.init();
         document.addEventListener("offline", this.is_offline, false);
         window.addEventListener("batterylow", this.onBatteryLow, false);
-        document.addEventListener("backbutton", this.onBackKeyDown, false);
-    },
-    onBackKeyDown: function(){
-        console.log('back');
-        navigation.back();
-        return false;
     },
     load_activities : function(call){
         /*$.getJSON(app.ip+'/activities.json', function(e){
@@ -155,6 +148,7 @@ var app = {
         this.callback = callback;
         //this.ip = window.location.origin;
         app.infos.uuid = new Date().getTime();
+        console.log('LE socket_callback est initialisé');
         app.socket_callback = function(e) {
             console.log(e);
         }
@@ -179,7 +173,9 @@ var app = {
         });
         app.set_video_assets();
         app.set_audio_assets();
-        
+        app.socket.on('boardingpass', function(datas){
+            app.socket_callback(datas);
+        });
         app.socket.on('njoy', function(datas) {
             switch (datas.status) {
                 case 'activities':
