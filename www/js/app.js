@@ -133,6 +133,7 @@ var app = {
         this.callback = callback;
         //this.ip = window.location.origin;
         app.infos.uuid = new Date().getTime();
+        console.log('on crée socket_callback sur app.js');
         app.socket_callback = function(e) {
             console.log(e);
         }

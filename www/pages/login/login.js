@@ -7,6 +7,7 @@ var login = {
         return false;
       }
       app.infos.user_name = $('#pseudo').val();
+      console.log('socket_callback LOGIN');
       app.socket_callback = function(e){
           if(e.status === "login_error"){
             ui.display_error({"icon":"", "message":e.infos.message});

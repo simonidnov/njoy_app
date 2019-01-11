@@ -1,7 +1,23 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 var app = {
-    ip : window.location.origin,
-    localip: "http://localhost:3000",
-    prodip: "http://10.3.141.1:3000",
+    ip : "http://10.3.141.1:3000",
     activities : null,
     callback:null,
     infos: {
@@ -28,11 +44,9 @@ var app = {
         this.receivedEvent('deviceready');
         //this.load_activities();
         //navigation.init();
-        //ui.init();
-        //document.addEventListener("offline", this.is_offline, false);
-        if(typeof cordova == "undefined"){
-            window.addEventListener("batterylow", this.onBatteryLow, false);
-        }
+        ui.init();
+        document.addEventListener("offline", this.is_offline, false);
+        window.addEventListener("batterylow", this.onBatteryLow, false);
     },
     load_activities : function(call){
         /*$.getJSON(app.ip+'/activities.json', function(e){
@@ -73,6 +87,7 @@ var app = {
         ui.battery_low();
     },
     set_video_assets:function(){
+        
         $(".video_asset #seeker").off("change").on("change", function(e) { 
             var sec = Math.round((app.current_video.duration/100)*$('.video_asset #seeker').val());
             console.log("seek to ", sec);
@@ -129,10 +144,11 @@ var app = {
             app.socket.emit("njoy", {status:"stop_audio"});
         });
     },
-    init_socket:function(callback) {
+    init_socket:function(callback){
         this.callback = callback;
         //this.ip = window.location.origin;
         app.infos.uuid = new Date().getTime();
+        console.log('LE socket_callback est initialisé');
         app.socket_callback = function(e) {
             console.log(e);
         }
@@ -157,7 +173,9 @@ var app = {
         });
         app.set_video_assets();
         app.set_audio_assets();
-        
+        app.socket.on('boardingpass', function(datas){
+            app.socket_callback(datas);
+        });
         app.socket.on('njoy', function(datas) {
             switch (datas.status) {
                 case 'activities':
@@ -331,111 +349,3 @@ var app = {
     }
 };
 app.initialize();
-
-/* SERVER VERSION 20 11 2018
-var app = {
-    infos: {
-        user_name: "",
-        uuid: "",
-        regis: false,
-        users: []
-    },
-    activities: null,
-    ip: window.location.origin,
-    //ip:"http://192.168.0.10:3000",
-    //ip:"http://10.213.1.231:3000",
-    callback: null,
-    socket: null,
-    init: function(callback) {
-        this.get_activities();
-        this.callback = callback;
-        this.init_socket();
-    },
-    get_activities: function() {
-        $.getJSON("activities.json", function(json) {
-            app.activities = json;
-        });
-    },
-    check_server: function() {
-
-    },
-    init_socket: function() {
-        //this.ip = window.location.origin;
-        app.infos.uuid = new Date().getTime();
-        app.socket_callback = function(e) {
-            console.log(e);
-        }
-        app.socket = io(this.ip, {
-            transports: ['websocket', 'xhr-polling']
-        });
-        app.socket.on('error', function(e) {
-            app.callback({
-                status: "error_socket",
-                datas: e
-            });
-        });
-        app.socket.on('connect_failed', function(e) {
-            app.callback({
-                status: "connect_failed"
-            });
-        });
-        app.socket.on('connect', function(e) {
-            app.callback({
-                status: "socket_connected"
-            });
-        });
-        app.socket.on('njoy', function(datas) {
-            $('.over_motion').remove();
-            switch (datas.status) {
-                case 'activities':
-                    app.infos.activities = datas.activities;
-                    break;
-                default:
-                    break;
-            }
-            app.socket_callback(datas);
-        });
-        app.socket.on('njoy_' + app.infos.uuid, function(datas) {
-            switch (datas.status) {
-                case 'animations':
-                    break;
-                case 'login_success':
-                    app.infos.users = datas.datas.users;
-                    if (_.where(app.infos.users, {
-                            uuid: app.infos.uuid
-                        })[0].regis !== "undefined" && _.where(app.infos.users, {
-                            uuid: app.infos.uuid
-                        })[0].regis === "true") {
-                        app.infos.regis = true;
-                    }
-                    break;
-                case 'login_error':
-                    app.infos.users = datas.datas.users;
-                    break;
-                default:
-                    break;
-            }
-            if (typeof datas.datas.animations !== "undefined") {
-                animations = datas.datas.animations;
-            }
-            app.socket_callback(datas);
-        });
-        app.socket.emit('njoy', {
-            status: "new"
-        });
-        app.socket.on('chat_message', function(msg) {
-            $('#messages').append($('<li>').text(JSON.stringify(msg)));
-        });
-        window.onbeforeunload = function(e) {
-            app.socket.emit('njoy', {
-                status: "disconnect",
-                user_name: app.infos.user_name,
-                uuid: app.infos.uuid
-            });
-        };
-    },
-    destroy: function() {
-
-    }
-}
-*/
