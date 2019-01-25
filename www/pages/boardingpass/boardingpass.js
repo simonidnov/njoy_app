@@ -27,6 +27,13 @@ boardingpass.init = function(){
             ]
         }, function(e){
             if(parseInt(e) === 0){
+                // on remet les settings par default sur les chronos...
+                this.settings = {
+                    chronoline:false,
+                    chronolineduration:"00:00",
+                    chronolap:false,
+                    chronolapduration:"00:00"
+                }
                 self.level = level;
                 // TODO, AVANT DE RAFRAICHIR ON AFFICHE UNE POPIN CAR LES QUESTIONS PRÉCÉDENTES SERONT PERDUES
                 // LORSQU'ON CHANGE DE NIVEAU ON DEMANDE LES QUESTION DU NIVEAU SSELECTIONNÉ
@@ -44,7 +51,6 @@ boardingpass.init = function(){
     }, this));
     // ON RESET LE SOCKET CALLBACK GLOBAL ET ON CATCH LES EVENEMENTS
     app.socket_callback = function(e) {
-        //console.log("socket callback boardingpass :::: ", e);
         switch(e.status){
             case 'getQuestions':
                 // ON NE FAIT RIEN DE CE COTÉ, LORSQUE LE CALL EST ENVOYÉ ON ATTEND UN SENDQUESTION DEPUIS LE RECEPTOR
@@ -77,6 +83,22 @@ boardingpass.init = function(){
                 element.find('[data-bpaction="validate"]').eq(0)[0].setAttribute('data-id', e.question.id);
                 //element.find('[data-line]').setAttribute(e.id);
                 break;
+            case 'paused':
+                $('#pauseButton').css('display', 'none');
+                $('#playButton').css('display', 'inline-flex');
+                this.set_events();
+                break;
+            case 'played':
+                $('#playButton').css('display', 'none');
+                $('#pauseButton').css('display', 'inline-flex');
+                this.set_events();
+                break;
+            case 'ended':
+                // GAME FINISHED
+                this.questions = [];
+                console.log('DATAS e = ', e);
+                $('.column.components .subcomponent').html(this.subcomponent_template({"status": "ended", "score": e.score}));
+                break;
         }
     }.bind(this);
     // PAR DEFAUT ON DEMANDE LES QUESTIONS DU NIVEAU ZERO (OU CO-PILOTE) AU RECEPTOR
@@ -93,7 +115,7 @@ boardingpass.reset_template = function() {
 }
 boardingpass.set_events = function() {
     var self = this;
-    $('[data-bpaction]').off(ui.event).on(ui.event, function(event){
+    $('[data-bpaction]').off(ui.event).on(ui.event, function(event) {
         // ON CHECK LA DEMANDE DU REGISSEUR
         var ID = $(this).attr('data-id'),
             LINE = $(this).attr('data-line');
@@ -120,7 +142,6 @@ boardingpass.set_events = function() {
                 break;
             case 'validate':
                 // LE REGISSEUR A VALIDÉ UNE DESTINATION
-
                 ui.popin({
                     "title":"Valider la réponse",
                     "message":"êtes-vous sure de valider cette réponse : <b>"+QUESTION.answer+"</b> ?",
@@ -139,9 +160,18 @@ boardingpass.set_events = function() {
             case 'start':
                 app.socket.emit('boardingpass', {"status":"getQuestions", "level":self.level, "settings":self.settings});
                 break;
+            case 'pause':
+                app.socket.emit('boardingpass', {"status":"pause"});
+                break;
+            case 'play':
+                app.socket.emit('boardingpass', {"status":"play"});
+                break;
+            case 'end':
+                app.socket.emit('boardingpass', {"status":"end"});
+                break;
         }
     });
-    $('#linechronocheck').on(ui.event, function(){
+    $('#linechronocheck').off(ui.event).on(ui.event, function(){
         if($(this).find('.radio_ui').hasClass('checked')){
             $(this).find('.radio_ui').removeClass('checked');
         }else{
@@ -156,7 +186,7 @@ boardingpass.set_events = function() {
         self.settings.chronoline = enable;
         self.settings.chronolineduration = $('#chronoline').val();
     });
-    $('#globalchronocheck').on(ui.event, function(){
+    $('#globalchronocheck').off(ui.event).on(ui.event, function(){
         if($(this).find('.radio_ui').hasClass('checked')){
             $(this).find('.radio_ui').removeClass('checked');
         }else{
@@ -172,10 +202,10 @@ boardingpass.set_events = function() {
         self.settings.chronolapduration = $('#chronotime').val();
     });
     
-    $('#chronotime').on('change', function(){
+    $('#chronotime').off('change').on('change', function(){
         self.settings.chronolapduration = $(this).val();
     });
-    $('#chronoline').on('change', function(){
+    $('#chronoline').off('change').on('change', function(){
         self.settings.chronolineduration = $(this).val();
     });
     

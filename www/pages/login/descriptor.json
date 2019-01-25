@@ -7,7 +7,6 @@
     "nav_left":[
     ],
     "nav_right":[
-      {"label":"", "link":"/search", "icon":"search"}
     ],
     "tab_bar______":[
       {"label":"link 1", "link":"/link", "icon":""},

@@ -22,6 +22,7 @@ var app_tools = {
             */
             var self = this;
             if(typeof app.selected_app.redirect !== "undefined"){
+                console.log('app.selected_app.redirect ', app.selected_app.redirect);
                 if(typeof app.selected_app.redirect !== "undefined"){
                     app.socket.emit('redirect', {url:app.selected_app.redirect});
                 }else{
@@ -59,13 +60,10 @@ var app_tools = {
                     TweenMax.to($('#tools_scroll'), .5, {top:"100%", ease:Power4.easeIn});
                 }
             });
-            
         }, this), 500);
-        
         if(typeof app.selected_app.tools.length === 'undefined' || app.selected_app.tools.length === 0){
             $('.app_tools').addClass('notools');
         }
-
         $(document).on('resize', function(){
             app_tools.resize();
         });
@@ -93,9 +91,7 @@ var app_tools = {
     },
     setAppId : function(appid){
         app.selected_tool = app.selected_app.apps[parseInt(appid)];
-
         $('.column.components').html(app_tools.component_template(app.selected_tool));
-        
         // ON s'assure de bien supprimer les sous componsant des apps precedentes 
         delete self.subcomponent_template;
         $('.column.components .subcomponent').html('');
@@ -150,6 +146,14 @@ var app_tools = {
                 delay:.5
             });
         }
+        /*
+        $('[data-component="golden_family"]').on('click', function(){
+            console.log('is golden family');
+        });
+        $('[data-type="response"]').on('click', function(){
+            console.log('intercept hitted area');
+        });
+        */
     },
     destroy: function() {
         console.log('destroy app_tools');
