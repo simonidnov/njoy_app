@@ -167,7 +167,20 @@ boardingpass.set_events = function() {
                 app.socket.emit('boardingpass', {"status":"play"});
                 break;
             case 'end':
-                app.socket.emit('boardingpass', {"status":"end"});
+                ui.popin({
+                    "title":"Fin du jeu",
+                    "message":"Êtes-vous sure de vouloir mettre fin à la partie en cours ?",
+                    "buttons":[
+                        {"label":"Oui", "class":"error"},
+                        {"label":"Non", "class":"success"}
+                    ]
+                }, function(e) {
+                    if(parseInt(e) === 0){
+                        app.socket.emit('boardingpass', {"status":"end"});
+                        event.preventDefault();
+                        return false;
+                    }
+                });
                 break;
         }
     });
