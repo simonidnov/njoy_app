@@ -32,7 +32,7 @@ var app = {
         duration:0,
         volume:1
     },
-    version:'1.0.7',
+    version:'1.0.8',
     socket: null,
     initialize: function() {
         if(typeof cordova == "undefined"){

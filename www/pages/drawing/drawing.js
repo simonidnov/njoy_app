@@ -13,7 +13,7 @@ var drawing = {
         setTimeout(function () {
             drawing.drawing_tool = new drawer("drawer");
             drawing.drawing_tool.init();
-            console.log("drawing.drawing_tool === ", drawing.drawing_tool);
+            // console.log("drawing.drawing_tool === ", drawing.drawing_tool);
             //app.socket_callback = $.proxy(function(e){
             //console.log(e);
             //}, this);

@@ -179,7 +179,7 @@ var ui = {
                 ui.direction = $(this).attr('data-direction');
             }
             if(typeof $(this).attr('data-ambiant') !== "undefined" && $(this).attr('data-ambiant') !== ""){
-                app.socket.emit("njoy", {status:"audio", file:$(this).attr('data-ambiant'), data:"", tools:app.selected_tool});
+                app.socket.emit("njoy", {status:"MUSIC_LOOP", file:$(this).attr('data-ambiant'), data:"", tools:app.selected_tool});
             }
             ui.navigate($(this).attr('data-navigate'));
             event.preventDefault();

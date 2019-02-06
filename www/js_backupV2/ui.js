@@ -169,22 +169,23 @@ var ui = {
     },
     setListeners: function() {
         $('[data-navigate]').off(ui.event).on(ui.event, function(event) {
-            if($(this).attr('data-navigate') === "/team"){
+            if($(this).attr('data-navigate') === "/team") {
               ui.openTeam();
               return false;
             }
             if(typeof $(this).attr('data-direction') !== "undefined"){
                 ui.direction = $(this).attr('data-direction');
             }
-            if($(this).attr('data-ambiant') !== ""){
-                app.socket.emit("njoy", {status:"audio", file:$(this).attr('data-ambiant'), data:"", tools:app.selected_tool});
+            if($(this).attr('data-ambiant') !== "") {
+                console.log('MUSIC_LOOP');
+                app.socket.emit("njoy", {status:"MUSIC_LOOP", file:$(this).attr('data-ambiant'), data:"", tools:app.selected_tool});
             }
             ui.navigate($(this).attr('data-navigate'));
             event.preventDefault();
             return false;
         });
-        $('[data-action]').off(ui.event).on(ui.event, function(){
-            switch($(this).attr('data-action')){
+        $('[data-action]').off(ui.event).on(ui.event, function() {
+            switch($(this).attr('data-action')) {
                 case 'drawing':
                     app.socket.emit("njoy", {status:"drawer"});
                     break;
