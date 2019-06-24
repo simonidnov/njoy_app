@@ -1,0 +1,64 @@
+<div class="labofolies_scan">
+
+</div>
+<div class="labofolies">
+    <div id="qrcodes"></div>
+    <link rel="stylesheet" type="text/css" href="pages/labofolies/css/labofolies.css">
+    <% if (screener === "settings") { %>
+    
+        <div class="team_picker">
+        <% for (var t=0; t<teams.length; t++) { %>
+            <div class="team" id="team<%= t %>" data-team="<%= t %>">
+                <div class="jauge">
+                    <iframe id="<%= teams[t].label %>" onload="labofolies.setIframes()" src="<%= app.ip %>/pages/labofolies/motions/<%= teams[t].label %>.html" width="50"></iframe>
+                </div>
+                <div class="score <% if(teams[t].isActive) { %> active <% } %>" data-team="<%= t %>">
+                    <div class="less" data-team="<%= t %>">-</div>
+                    <input type="number" data-team="<%= t %>" max="100" min="0" value="<%= teams[t].score %>" enabled="<%= teams[t].isActive %>"/>
+                    <div class="more" data-team="<%= t %>">+</div>
+                </div>
+                <div class="active active_team" data-team="<%= t %>">
+                    <div class="label">
+                        <% if(teams[t].isActive) { %> Désactiver <% } %>
+                        <% if(!teams[t].isActive) { %> Activer <% } %>
+                    </div>
+                    <div class="radio_ui <% if(teams[t].isActive) { %> checked <% } %>"></div>
+                </div>
+            </div>
+        <% } %>
+        <div class="classic_button success centered" id="gotTolabo">Aller au laboratoire</div>
+        </div>
+    <% } else if (screener === "scanner") { %>
+        <div class="scanner">
+            <h3>Sélectionner l'équipe</h3>
+            <div class="team_selector">
+                <p>Cliquez sur la fiole correspondante à l'équipe</p>
+                <ul id="team_picker">
+                    <% for (var t=0; t<teams.length; t++) { %>
+                        <% if(teams[t].isActive) { %>
+                            <li id="team<%= t %>" data-team="<%= t %>">
+                                <div class="jauge">
+                                    <iframe id="<%= teams[t].label %>" onload="labofolies.setIframes()" src="<%= app.ip %>/pages/labofolies/motions/<%= teams[t].label %>.html" width="50"></iframe>
+                                </div>
+                                <span><%= teams[t].label %></span>
+                            </li>
+                        <% } %>
+                    <% } %>
+                </ul>
+            </div>
+            <div class="classic_button success centered disabled" id="openScan">Scanner une carte</div>
+        </div>
+    <% } else if (screener === "synthetisation") { %>
+        <div class="scanner">
+            <h3>Réussite !</h3>
+            <p>
+                Lorsque l'animation est terminée, vous devez lancer la synthétisation du vaccin.<br>
+                Surtout, ne lancez pas la synthétisation en cours de partie car l'action entraîne la fin du jeu et vous perdrez l'état de la partie en cours.<br>
+                Logiquement pour lancer la synthétisation du remède, les équipes doivent avoir réussi 10 épreuves en solvant 10 énigmes chacunes.<br>
+                Si ce n'est pas le cas, vous pouvez lancer la synthétisation faute de temps<br>
+                Nous suggérons de passer par l'écran de gestion des équipes pour attibuer les points manquants si besoin avant la synthétisation.<br>
+            </p>
+            <div class="classic_button success centered" id="synthetisation">Synthétiser le reméde</div>
+        </div>
+    <% } %>
+</div>

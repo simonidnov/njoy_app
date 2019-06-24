@@ -7,7 +7,7 @@
             </div>
             <h2><%= app.selected_app.label %></h2>
             <p><%= app.selected_app.desc %></p>
-            <div class="label_separator">Prérecquis</div>
+            <div class="label_separator">Installation</div>
             <ul class="task_list">
                 <% for(var i=0; i<app.selected_app.prerecquise.length; i++ ){ %>
                     <li><div class="label"><%= app.selected_app.prerecquise[i].label %></div><div class="radio_ui" data-checked="<%= app.selected_app.prerecquise[i].checked %>"></div></li>

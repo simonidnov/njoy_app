@@ -1,0 +1,194 @@
+.labofolies {}
+
+.team_picker {
+    width: 100%;
+    position: relative;
+    height: 80px;
+    display: block;
+}
+
+svg {
+    background-color: rgba(255, 255, 255, 0);
+    width: auto;
+    left: 0;
+    right: 0;
+    margin: auto;
+    position: absolute;
+}
+
+.jmol_appletdiv {
+    background-color: #B5C8E6;
+}
+
+.team_picker .team {
+    display: inline-flex;
+    width: 100%;
+    background-color: #F0F0F0;
+    border-bottom: 1px solid #E3E3E3;
+    padding-bottom: 10px;
+}
+
+.team_picker .team .jauge {
+    height: 100px;
+    width: 100px;
+}
+
+.team_picker .team .score {
+    display: inline-flex !important;
+    min-width: 320px;
+}
+
+.team_picker .team .score .less,
+.team_picker .team .score .more {
+    width: 60px;
+    min-width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    border: 2px solid #D1D1D1;
+    font-size: 35px;
+    color: #D1D1D1;
+    line-height: 50px;
+    margin: 20px;
+    background: #FFF;
+}
+
+.team_picker .team .score input {
+    border: none;
+}
+
+.team_picker .team .score .more {}
+
+.team_picker .team .score input {}
+
+.team_picker .team .active {
+    width: 135px;
+    position: relative;
+    display: inline-flex;
+    float: right;
+}
+
+.team_picker .team .active .label {
+    line-height: 100px;
+}
+
+.section_tab p {
+    display: none;
+}
+
+.section_tab {
+    padding-bottom: 0;
+}
+
+
+.scoring {
+    display: inline-flex !important;
+    width: 100%;
+}
+
+.score {
+    display: inline !important;
+}
+
+iframe {
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden;
+}
+
+.labofolies_scan {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #FFF;
+    left: 0;
+    top: 0;
+    transform: translateY(100vh);
+}
+
+.labofolies_scan.opened {
+    transform: translateY(0vh);
+    transition: transform .3s ease-out;
+}
+
+.labofolies_scan .left {
+    background: #E3E3E3;
+}
+
+.labofolies_scan .left,
+.labofolies_scan .right {
+    float: left;
+    width: 50%;
+}
+
+.labofolies_scan .right h1 {
+    font-weight: bold;
+    color: #234377;
+    padding-top: 130px;
+    max-width: 80%;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.labofolies_scan .right p {
+    font-size: 30px;
+}
+
+.labofolies_scan .formulae {
+    font-size: 60px;
+}
+
+.labofolies_scan .points {
+    position: absolute;
+    right: 0;
+    left: 0;
+    margin: auto;
+    z-index: 999999;
+    height: 40vh;
+    width: 200px;
+    bottom: 40px;
+}
+
+.labofolies_scan .points svg {
+    height: unset;
+}
+
+.logo_labofolies {
+    width: 20vw;
+    height: 20vw;
+    position: fixed;
+    top: 2px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 999999;
+    background-image: url(http://10.3.141.1:3000/ressources/labofolies/logo.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+#team_picker {
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+}
+
+#team_picker li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+#team_picker li * {
+    pointer-events: none;
+}
+
+#team_picker li .jauge {
+    height: 80px;
+}
+
+#team_picker li.selected {
+    border: 2px solid coral;
+}

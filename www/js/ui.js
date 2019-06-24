@@ -516,10 +516,10 @@ var ui = {
                 ui.popin({
                     "illus":"img/logout_illus.svg",
                     "title":"WIFI",
-                    "message":"Pour utiliser l'application vous devez activer la WIFI et vous connecter sur le réseau NJOY avec le mot de passe njoynjoy.",
+                    "message":"Pour utiliser l'application vous devez activer le WIFI et vous connecter sur le réseau NJOY avec le mot de passe njoynjoy.",
                     "buttons":[
                         {
-                            "label": "Activer la WIFI", 
+                            "label": "Activer le WIFI", 
                             "class": "error"
                         }
                     ]

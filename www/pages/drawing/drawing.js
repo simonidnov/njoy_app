@@ -66,7 +66,6 @@ var drawer = function (canvas_id) {
         scale = $('#'+canvas_id).width() / window.innerWidth;
       }
     }*/
-
     $('#' + canvas_id).css({
         "transform": 'scale(' + scale + ')',
         "left": -(((1920 * scale) - window.innerWidth) / 2)

@@ -1,19 +1,19 @@
 var canvas_confettis,
-        ctx,
-        W,
-        H,
-        mp = 20,
-        particles = [],
-        angle = 0,
-        tiltAngle = 0,
-        confettiActive = true,
-        animationComplete = true,
-        deactivationTimerHandler,
-        reactivationTimerHandler,
-        animationHandler,
-        _stopped=false;
+    ctx,
+    W,
+    H,
+    mp = 20,
+    particles = [],
+    angle = 0,
+    tiltAngle = 0,
+    confettiActive = true,
+    animationComplete = true,
+    deactivationTimerHandler,
+    reactivationTimerHandler,
+    animationHandler,
+    _stopped = false;
 
-var confettis = function(){
+var confettis = function () {
     // globals
 
     // objects
@@ -56,7 +56,7 @@ var confettis = function(){
         }
     }
 
-    this.initConfettis = function(canvas){
+    this.initConfettis = function (canvas) {
         SetGlobals(canvas);
         InitializeButton();
         InitializeConfetti();
@@ -185,8 +185,8 @@ var confettis = function(){
         clearTimeout(reactivationTimerHandler);
         clearTimeout(animationHandler);
     }
-    this.start_confettis = function(){if(!confettiActive){RestartConfetti();}}
-    this.stop_confettis = function(){DeactivateConfetti();_stopped=true;}
+    this.start_confettis = function () { if (!confettiActive) { RestartConfetti(); } }
+    this.stop_confettis = function () { DeactivateConfetti(); _stopped = true; }
     function DeactivateConfetti() {
         confettiActive = false;
         ClearTimers();
@@ -211,12 +211,12 @@ var confettis = function(){
 
     window.requestAnimFrame = (function () {
         return window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.oRequestAnimationFrame ||
-        window.msRequestAnimationFrame ||
-        function (callback) {
-            return window.setTimeout(callback, 1000 / 60);
-        };
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            window.oRequestAnimationFrame ||
+            window.msRequestAnimationFrame ||
+            function (callback) {
+                return window.setTimeout(callback, 1000 / 60);
+            };
     })();
 };

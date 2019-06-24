@@ -26,30 +26,37 @@ var app = {
         regis: false,
         users: []
     },
-    current_video:{
+    current_video: {
         name:"",
         position:0,
         duration:0,
         volume:1
     },
-    version:'1.0.8',
+    version:'1.0.9',
     socket: null,
-    initialize: function() {
-        if(typeof cordova == "undefined"){
+    initialize: function () {
+        if(typeof cordova == "undefined") {
             this.onDeviceReady();
         }else{
             document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
         }
     },
-    onDeviceReady: function() {
+    onDeviceReady: function () {
         this.receivedEvent('deviceready');
         //this.load_activities();
         //navigation.init();
         ui.init();
+        document.addEventListener("backbutton", this.onBackKeyDown, false);
         document.addEventListener("offline", this.is_offline, false);
         window.addEventListener("batterylow", this.onBatteryLow, false);
     },
-    load_activities : function(call){
+    onBackKeyDown: function (e) {
+        console.log('back');
+        // navigation.back();
+        e.preventDefault();
+        return false;
+    },
+    load_activities : function (call) {
         /*$.getJSON(app.ip+'/activities.json', function(e){
             app.activities = e;
         });*/
@@ -81,13 +88,13 @@ var app = {
             
         });
     },
-    is_offline : function(){
+    is_offline : function () {
         ui.check_wifi();
     },
-    onBatteryLow : function(){
+    onBatteryLow : function () {
         ui.battery_low();
     },
-    set_video_assets:function(){
+    set_video_assets: function () {
         
         $(".video_asset #seeker").off("change").on("change", function(e) { 
             var sec = Math.round((app.current_video.duration/100)*$('.video_asset #seeker').val());
@@ -116,7 +123,7 @@ var app = {
             app.socket.emit("njoy", {status:"stop_video"});
         });
     },
-    set_audio_assets:function(){
+    set_audio_assets: function () {
         
         $(".audio_asset #seeker").off("change").on("change", function(e) { 
             var sec = Math.round((app.current_video.duration/100)*$('.audio_asset #seeker').val());
@@ -145,39 +152,39 @@ var app = {
             app.socket.emit("njoy", {status:"stop_audio"});
         });
     },
-    init_socket:function(callback){
+    init_socket: function (callback) {
         this.callback = callback;
         //this.ip = window.location.origin;
         app.infos.uuid = new Date().getTime();
         console.log('LE socket_callback est initialisé');
-        app.socket_callback = function(e) {
+        app.socket_callback = function (e) {
             console.log(e);
         }
         app.socket = io(this.ip, {
             transports: ['websocket', 'xhr-polling']
         });
-        app.socket.on('error', function(e) {
+        app.socket.on('error', function (e) {
             app.callback({
                 status: "error_socket",
                 datas: e
             });
         });
-        app.socket.on('connect_failed', function(e) {
+        app.socket.on('connect_failed', function (e) {
             app.callback({
                 status: "connect_failed"
             });
         });
-        app.socket.on('connect', function(e) {
+        app.socket.on('connect', function (e) {
             app.callback({
                 status: "socket_connected"
             });
         });
         app.set_video_assets();
         app.set_audio_assets();
-        app.socket.on('boardingpass', function(datas){
+        app.socket.on('boardingpass', function (datas) {
             app.socket_callback(datas);
         });
-        app.socket.on('njoy', function(datas) {
+        app.socket.on('njoy', function (datas) {
             switch (datas.status) {
                 case 'activities':
                     app.infos.activities = datas.activities;
@@ -306,7 +313,7 @@ var app = {
             }
             app.socket_callback(datas);
         });
-        app.socket.on('njoy_' + app.infos.uuid, function(datas) {
+        app.socket.on('njoy_' + app.infos.uuid, function (datas) {
             switch (datas.status) {
                 case 'animations':
                     break;
@@ -334,10 +341,10 @@ var app = {
         app.socket.emit('njoy', {
             status: "new"
         });
-        app.socket.on('chat_message', function(msg) {
+        app.socket.on('chat_message', function (msg) {
             $('#messages').append($('<li>').text(JSON.stringify(msg)));
         });
-        window.onbeforeunload = function(e) {
+        window.onbeforeunload = function (e) {
             app.socket.emit('njoy', {
                 status: "disconnect",
                 user_name: app.infos.user_name,
@@ -345,7 +352,7 @@ var app = {
             });
         };
     },
-    receivedEvent: function(id) {
+    receivedEvent: function (id) {
         //console.log('Received Event: ' + id);
     }
 };

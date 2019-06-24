@@ -69,16 +69,16 @@ var app_tools = {
         });
         app_tools.resize();
     },
-    resize : function(){
+    resize : function () {
         if(window.innerWidth <= 568){
             this.is_mobile = true;
         }else{
             this.is_mobile = false;
         }
     },
-    set_events : function(){
+    set_events : function () {
         app_tools.tab_bar = 0;
-        $('.tab_bar li').off(ui.event).on(ui.event, function(){
+        $('.tab_bar li').off(ui.event).on(ui.event, function () {
             $('.tab_bar li').removeClass('selected');
             $('.section_tab').css('display', 'none');
             $('#section_'+$(this).attr('id')).css('display', 'block');
@@ -89,7 +89,7 @@ var app_tools = {
             }
         });
     },
-    setAppId : function(appid){
+    setAppId : function (appid) {
         app.selected_tool = app.selected_app.apps[parseInt(appid)];
         $('.column.components').html(app_tools.component_template(app.selected_tool));
         // ON s'assure de bien supprimer les sous componsant des apps precedentes 
@@ -112,7 +112,7 @@ var app_tools = {
                             var action = app.selected_tool.actions[a];
                             switch(action.type){
                                 case 'javascript':
-                                    window[action.class][action.function]();
+                                    window[action.class][action.function](app.selected_tool.datas);
                                     break;
                                 default:
                                     break;
