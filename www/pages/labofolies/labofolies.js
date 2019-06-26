@@ -20,7 +20,6 @@ var createQRcodes = function (data) {
   setTimeout(async function () {
     var target = document.getElementById('qrcodes');
     for (i = 0; i < data.length; i++) {
-      console.log('log element : ', data[i]);
       delete data[i].description;
       var url = "http://10.3.141.85:4000/api/barcode?text=" + data[i].formula + "&bcid=qrcode&textxalign=center&scale=1&width=500&height=500&contentType=download&showborder=false&borderleft=1&borderright=1&bordertop=1&borderbottom=1&guardwhitespace=false";
       var myHeaders = new Headers();
@@ -184,8 +183,11 @@ labofolies.set_events = function () {
   });
   $('#gotTolabo').off('click').on('click', function (e) {
     // set screener laboratory then emmit labofolies_status
+    labofolies_status.display = 'default';
     labofolies_status.screener = 'laboratory';
-    labofolies.saveState();
+    setTimeout(function () {
+      labofolies.saveState();
+    }, 1000);
     // labofolies_status.date = new Date().getTime();
     // app.socket.emit('labofolies', labofolies_status);
   });
@@ -220,9 +222,15 @@ labofolies.set_events = function () {
   });
   $('#team_picker li').off('click').on('click', function () {
     $('#team_picker li').removeClass('selected');
-    $(this).addClass('selected');
-    $('#openScan').removeClass('disabled');
-    labofolies_status.currentTeamScan = parseInt($(this).attr('id').replace('team', ''));
+    if (!$(this).hasClass('selected')) {
+      $(this).addClass('selected');
+      $('#openScan').removeClass('disabled');
+      labofolies_status.currentTeamScan = parseInt($(this).attr('id').replace('team', ''));
+    } else {
+      $(this).removeClass('selected');
+      $('#openScan').addClass('disabled');
+      labofolies_status.currentTeamScan = null;
+    }
   });
 }
 labofolies.openScanner = function () {
@@ -388,15 +396,19 @@ labofolies.update_jauge = function (teamName, teamId, score) {
   }
 }
 labofolies.saveState = function () {
-  window.localStorage.setItem('labofolies', JSON.stringify(labofolies_status));
   labofolies_status.date = new Date().getTime();
   app.socket.emit('labofolies', labofolies_status);
+  labofolies_status.screener = "default";
+  labofolies_status.display = "default";
+  window.localStorage.setItem('labofolies', JSON.stringify(labofolies_status));
 }
 labofolies.setState = function () {
   var saved = window.localStorage.getItem('labofolies');
   if (typeof saved !== 'undefined' && saved !== '' && saved !== null) {
     labofolies_status = JSON.parse(saved);
   }
+  labofolies_status.screener = "default";
+  labofolies_status.display = "default";
   labofolies_status.date = new Date().getTime();
   app.socket.emit('labofolies', labofolies_status);
 }
