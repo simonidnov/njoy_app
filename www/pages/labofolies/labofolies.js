@@ -90,6 +90,16 @@ labofolies.init = function (datas) {
     labofolies.reset_template();
   }, this));
 }
+labofolies.resetTeams = function () {
+  labofolies_status.teams = [
+    { id: 0, label: "blue", score: 0, molecules: [], isActive: false },
+    { id: 1, label: "orange", score: 0, molecules: [], isActive: false },
+    { id: 2, label: "pink", score: 0, molecules: [], isActive: false },
+    { id: 3, label: "green", score: 0, molecules: [], isActive: false },
+    { id: 4, label: "red", score: 0, molecules: [], isActive: false }
+  ];
+  this.reset_template();
+}
 labofolies.reset_template = function () {
   // on bourre le template dans la colonne de droite
   this.datas.teams = labofolies_status.teams;
@@ -191,12 +201,27 @@ labofolies.set_events = function () {
     // labofolies_status.date = new Date().getTime();
     // app.socket.emit('labofolies', labofolies_status);
   });
+  $('#resetTeams').off('click').on('click', function () {
+    labofolies_status.display = 'default';
+    labofolies_status.screener = 'laboratory';
+    labofolies.resetTeams();
+  })
   $('#synthetisation').off('click').on('click', function (e) {
     // set screener laboratory then emmit labofolies_status
     labofolies_status.screener = 'synthetisation';
     // labofolies_status.date = new Date().getTime();
     labofolies.saveState();
     // app.socket.emit('labofolies', labofolies_status);
+    setTimeout(function () {
+      app.socket.emit("njoy", {
+        file: "/ressources/labofolies/video/labofolies_synthetisation.mp4",
+        status: "video"
+      });
+    }, 1500);
+    setTimeout(function () {
+      labofolies_status.screener = 'default';
+      app.socket.emit('labofolies', labofolies_status);
+    }, 10000);
   });
   $('#openScan').off('click').on('click', function () {
     if (labofolies_status.currentTeamScan === null || $('#openScan').hasClass('disabled')) {
@@ -259,10 +284,10 @@ labofolies.openScanner = function () {
             });
           } else {
             // var team = labofolies_status.currentTeamScan;
-
+            console.log(code);
             // console.log('SEARCH MOLECULE CODE => ', code);
             var already = false;
-            var MOLECULE = _.where(JSON.parse(labofolies_status.molecules), { formula: code })[0];
+            var MOLECULE = _.where(JSON.parse(labofolies.molecules), { formula: code })[0];
             // On check si l'équipe n'a pas déjà scanné cette molécule avant d'attribuer les points
             if (typeof labofolies_status.teams[team].molecules === 'undefined') {
               labofolies_status.teams[team].molecules = [];
@@ -398,21 +423,25 @@ labofolies.update_jauge = function (teamName, teamId, score) {
 labofolies.saveState = function () {
   labofolies_status.date = new Date().getTime();
   app.socket.emit('labofolies', labofolies_status);
-  labofolies_status.screener = "default";
-  labofolies_status.display = "default";
+  /* labofolies_status.screener = "default";
+  labofolies_status.display = "default"; */
   window.localStorage.setItem('labofolies', JSON.stringify(labofolies_status));
 }
 labofolies.setState = function () {
   var saved = window.localStorage.getItem('labofolies');
   if (typeof saved !== 'undefined' && saved !== '' && saved !== null) {
     labofolies_status = JSON.parse(saved);
+    labofolies_status.display = 'default';
+    labofolies_status.screener = 'laboratory';
   }
-  labofolies_status.screener = "default";
-  labofolies_status.display = "default";
+  // labofolies_status.screener = "default";
+  // labofolies_status.display = "default";
   labofolies_status.date = new Date().getTime();
   app.socket.emit('labofolies', labofolies_status);
 }
 labofolies.configJMOL = function (mol, MOLECULE, already) {
+
+  console.log(mol, MOLECULE, already);
   // MOLECULE est issu du json modelcules.json depuis le folder
   // already est = à true dans le cas ou la molécule a déjà étée scannée par l'équipe, dans ce cas on ne lui attribu pas de points 
   // l'idée est de créer une animation lorsque des points sont attribués et de parmettre de scanner de nouveau pour visualiser la molécule
@@ -420,7 +449,17 @@ labofolies.configJMOL = function (mol, MOLECULE, already) {
   var Info;
   // labofolies.molecules IS PRELOADED ON INIT
   // labofolies/molecules.json
+  var ext = ".mol";
 
+  if (mol === 'DNA') {
+    ext = ".pdb";
+  }
+
+  var cif = ['Gold', 'Diamond', 'Hydroxylapatite', 'Talc'];
+  if (cif.includes(mol)) {
+    ext = '.cif';
+  }
+  console.log(app.ip + "/ressources/labofolies/molecules/" + mol.replace(' ', "_") + "/" + mol.replace(' ', "_") + ext);
   var myMolInfos = MOLECULE;
   ; (function () {
     Info = {
@@ -432,7 +471,7 @@ labofolies.configJMOL = function (mol, MOLECULE, already) {
       // serverURL: "https://chemapps.stolaf.edu/jmol/jsmol/php/jsmol.php",
       use: "HTML5",
       readyFunction: null,
-      src: app.ip + "/ressources/labofolies/molecules/" + mol + "/" + mol + ".mol",
+      src: app.ip + "/ressources/labofolies/molecules/" + mol.replace(' ', "_") + "/" + mol.replace(' ', "_") + ext,
       bondWidth: 4,
       zoomScaling: 1.5,
       pinchScaling: 2.0,
@@ -447,9 +486,19 @@ labofolies.configJMOL = function (mol, MOLECULE, already) {
       debug: false
     }
   })();
-  var myMol = Jmol.getTMApplet("jmol", Info);
-  console.log(myMol);
-  var temp = '<div class="left">' + myMol._code + '</div>';
+  var myMol = {};
+  try {
+    myMol = Jmol.getTMApplet("jmol", Info);
+  } catch (err) {
+  }
+
+
+  var temp = '';
+  if (ext === '.mol') {
+    temp += '<div class="left">' + myMol._code + '</div>';
+  } else {
+    temp += '<div class="left" style="width:50%; height:100%; background-image:url(' + app.ip + '/ressources/labofolies/molecules/' + MOLECULE.folder + '/' + MOLECULE.folder + '_model.png)"></div>';
+  }
   temp += '<div class="right">';
   temp += '<div class="logo_labofolies"></div>';
   temp += '<h1>' + myMolInfos.name + '</h1>';

@@ -4,9 +4,9 @@
       "keystore": "idkids.keystore",
       "storePassword": "okaidi",
       "alias": "upload",
-      "password" : "okaidi",
+      "password": "okaidi",
       "keystoreType": "",
-      "debuggable":false
+      "debuggable": false
     }
   }
 }

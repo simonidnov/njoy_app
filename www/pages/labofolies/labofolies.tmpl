@@ -28,6 +28,9 @@
             <br/>
             <br/>
             <div class="classic_button success centered" id="gotTolabo">Aller au laboratoire</div>
+            <br/>
+            <br/>
+            <div class="classic_button danger centered" id="resetTeams">Réinitialiser les équipes et scores</div>
         </div>
     <% } else if (screener === "scanner") { %>
         <div class="scanner">
@@ -52,16 +55,12 @@
         </div>
     <% } else if (screener === "synthetisation") { %>
         <div class="scanner">
-            <h3>Réussite !</h3>
+            <h3>Synthétiation du vaccin !</h3>
             <p>
-                Lorsque l'animation est terminée, vous devez lancer la synthétisation du vaccin.<br>
-                Surtout, ne lancez pas la synthétisation en cours de partie car l'action entraîne la fin du jeu et vous perdrez l'état de la partie en cours.<br>
-                Logiquement pour lancer la synthétisation du remède, les équipes doivent avoir réussi 10 épreuves en solvant 10 énigmes chacunes.<br>
-                Si ce n'est pas le cas, vous pouvez lancer la synthétisation faute de temps<br>
-                Nous suggérons de passer par l'écran de gestion des équipes pour attibuer les points manquants si besoin avant la synthétisation.<br>
+                Cette vidéo conclura l’animation Labofolies en envoyant le vaccin au professeur.<br>
             </p>
             <br/>
-            <div class="classic_button success centered" id="synthetisation">Synthétiser le reméde</div>
+            <div class="classic_button success centered" id="synthetisation">Vidéo de conclusion</div>
         </div>
     <% } %>
 </div>

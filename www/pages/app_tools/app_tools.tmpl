@@ -47,7 +47,7 @@
                 <h3>Applications</h3>
                 <ul class="tools_list">
                 <% for(var i=0; i<app.selected_app.apps.length; i++){ %>
-                    <li data-appid="<%= i %>">
+                    <li data-appid="<%= i %>" class="<%= app.selected_app.apps[i].class %>">
                         <h4><%= app.selected_app.apps[i].label %></h4>
                         <p><%= app.selected_app.apps[i].desc %></p>
                     </li>

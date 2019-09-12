@@ -67,15 +67,14 @@
 .ui .popin {
     background-color: #FFF;
     display: table;
-    width: 90%;
+    border-radius: 7px;
     max-width: 450px;
     left: 0;
     right: 0;
+    margin: auto;
     top: 0;
     bottom: 0;
-    margin: auto;
-    border-radius: 7px;
-    position: absolute;
+    position: fixed;
     overflow: hidden;
 }
 
