@@ -4,7 +4,7 @@ var app = {
     prodip: "http://10.3.141.1:3000",
     activities: null,
     callback: null,
-    version: '1.0.5',
+    version: '1.1.0',
     infos: {
         user_name: "",
         uuid: "",

@@ -37,13 +37,14 @@ var createQRcodes = function (data) {
         $('.toremove').off('click').on('click', function (evt) {
           $(this).remove();
         });
-        /* await response.blob().then(function (myBlob) {
+        /* 
+        await response.blob().then(function (myBlob) {
           console.log('myBlob ', myBlob);
           var objectURL = URL.createObjectURL(myBlob);
           // myImage.src = objectURL;
           console.log('objectURL ', objectURL);
-        }); */
-
+        });
+        */
       });
     };
   }, 3000);
